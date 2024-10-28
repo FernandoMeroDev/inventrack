@@ -15,7 +15,7 @@ return new class extends Migration
             $table->smallIncrements('id')->unsigned();
             $table->primary('id');
             $table->string('name', 255)->unique();
-            $table->string('image', 500)->nullable();
+            $table->string('image', 500)->nullable()->default(null);
             $table->unsignedTinyInteger('min_stock');
             $table->timestamps();
         });
