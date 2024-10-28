@@ -7,6 +7,7 @@ use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Receipt extends Model
 {
@@ -29,5 +30,10 @@ class Receipt extends Model
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function movements(): HasMany
+    {
+        return $this->hasMany(Movement::class);
     }
 }
