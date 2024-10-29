@@ -7,6 +7,7 @@ use App\Models\Warehouse;
 use Database\Seeders\Products\ProductSeeder;
 use Database\Seeders\Receipts\ReceiptSeeder;
 use Database\Seeders\Receipts\ReceiptTypeSeeder;
+use Database\Seeders\Shelves\ShelfSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -40,7 +41,10 @@ class DatabaseSeeder extends Seeder
 
         Warehouse::factory(5)->create();
 
-        $this->call(ReceiptSeeder::class);
+        $this->call([
+            ReceiptSeeder::class,
+            ShelfSeeder::class,
+        ]);
     }
 
     private function createRealData(): void
