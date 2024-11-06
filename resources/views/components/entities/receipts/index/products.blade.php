@@ -22,7 +22,7 @@
                     <p class="flex items-center"
                     ><a
                         class="text-blue-400 underline"
-                        href="# {{-- route('receipts.show', $receipt->id) --}}"
+                        href="{{route('receipts.show', $receipt->id)}}"
                     >Número: {{$receipt->id}}</a></p>
                 </div>
             </div>

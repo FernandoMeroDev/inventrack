@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Receipts;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Receipts\IndexRequest;
+use App\Http\Requests\Receipts\UpdateRequest;
+use App\Models\Products\Product;
+use App\Models\Products\SalePrice;
+use App\Models\Receipts\Movement;
 use App\Models\Receipts\Receipt;
 use App\Models\Receipts\ReceiptType;
 use App\Models\User;
@@ -51,5 +55,88 @@ class ReceiptController extends Controller
             ->simplePaginate(10)
             ->withQueryString()
             ->fragment('receipts');
+    }
+
+    public function show(Receipt $receipt)
+    {
+        
+        $data = ['receipt' => $receipt];
+        if($receipt->type->name == 'sale'){
+            $data['total'] = '$' . number_format(
+                $receipt->movements->sum('price'), 2, ',', ' '
+            );
+        }
+        return view('entities.receipts.show', $data);
+    }
+
+    public function edit(Receipt $receipt)
+    {
+        $data = ['receipt' => $receipt];
+        if($receipt->type->name == 'sale'){
+            $data['total'] = '$' . number_format(
+                $receipt->movements->sum('price'), 2, ',', ' '
+            );
+        }
+        return view('entities.receipts.edit', $data);
+    }
+
+    public function update(UpdateRequest $request, Receipt $receipt)
+    {
+        $validated = $request->validated();
+        $receipt->update(['comment' => $validated['comment'] ?? '']);
+        for($i = 0; $i < count($validated['movement_ids']); $i++){
+            $this->updateMovement([
+                'movement_id' => $validated['movement_ids'][$i],
+                'amount' => $validated['amounts'][$i],
+                'sale_price_id' => $validated['sale_price_ids'][$i],
+                'receipt' => $receipt
+            ]);
+        }
+        return redirect()->route('receipts.edit', $receipt->id);
+    }
+
+    private function updateMovement(array $data)
+    {
+        $movement = Movement::find($data['movement_id']);
+        $salePrice = SalePrice::find($data['sale_price_id']);
+        $existences = Product::join('movements', 'movements.product_id', '=', 'products.id')
+            ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
+            ->join('warehouses', 'receipts.warehouse_id', '=', 'warehouses.id')
+            ->select('movements.id', 'movements.existences')
+            ->where('movements.id', '<', $movement->id)
+            ->where('movements.product_id', $movement->product->id)
+            ->where('receipts.warehouse_id', $data['receipt']->warehouse_id)
+            ->orderBy('id', 'desc')
+            ->first()?->existences ?? 0;
+        $movement->update([
+            'amount' => $data['amount'],
+            'price' => $salePrice->value,
+            'existences' => $existences - $data['amount']
+        ]);
+        $this->updateNextMovements($movement);
+    }
+
+    private function updateNextMovements(Movement $movementUpdated)
+    {
+        $movements = Movement::join('products', 'movements.product_id', '=', 'products.id')
+            ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
+            ->join('warehouses', 'receipts.warehouse_id', '=', 'warehouses.id')
+            ->select('movements.*')
+            ->where('movements.id', '>', $movementUpdated->id)
+            ->where('movements.product_id', $movementUpdated->product->id)
+            ->where('receipts.warehouse_id', $movementUpdated->receipt->warehouse_id)
+            ->get();
+        $previousMovement = $movementUpdated;
+        foreach($movements as $movement){
+            if(
+                $movement->receipt->type->name == 'sale'
+                || $movement->receipt->type->name == 'retirement'
+            ){
+                $movement->update(['existences' => $previousMovement->existences - $movement->amount]);
+            } else {
+                $movement->update(['existences' => $previousMovement->existences + $movement->amount]);
+            }
+            $previousMovement = $movement;
+        }
     }
 }

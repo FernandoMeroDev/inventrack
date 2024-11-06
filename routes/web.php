@@ -38,4 +38,7 @@ Route::middleware('auth')->controller(CashClosingController::class)->group(funct
 Route::middleware('auth')->controller(ReceiptController::class)->group(function(){
     Route::get('/comprobantes/consultar', 'ask')->name('receipts.ask');
     Route::get('/comprobantes', 'index')->name('receipts.index');
+    Route::get('/comprobantes/{receipt}', 'show')->name('receipts.show');
+    Route::get('/comprobantes/{receipt}/editar', 'edit')->name('receipts.edit');
+    Route::put('/comprobantes/{receipt}', 'update')->name('receipts.update');
 });
