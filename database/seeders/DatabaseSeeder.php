@@ -30,8 +30,13 @@ class DatabaseSeeder extends Seeder
     private function createFakeData(): void
     {
         User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Test User 0',
             'email' => 'test@example.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Test User 1',
+            'email' => 'test_1@example.com',
         ]);
         
         $this->call([

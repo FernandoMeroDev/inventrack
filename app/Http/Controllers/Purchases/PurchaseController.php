@@ -33,7 +33,7 @@ class PurchaseController extends Controller
                 'warehouse_id' => $validated['warehouse_id'],
             ]);
         }
-        return 'Guardado';
+        return redirect()->route('purchases.create');
     }
 
     private function storeMovement(array $data): void

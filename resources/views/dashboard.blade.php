@@ -17,6 +17,10 @@
                         <strong>Comprar</strong>
                     </a>
 
+                    <a href="{{route('cash-closing.ask')}}" class="block mb-2">
+                        <strong>Cierre de caja</strong>
+                    </a>
+
                     <a href="#" class="block mt-2">
                         <strong>Link</strong>
                     </a>

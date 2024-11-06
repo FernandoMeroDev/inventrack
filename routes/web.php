@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashClosingController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Sales\SaleController;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,9 @@ Route::middleware('auth')->controller(SaleController::class)->group(function(){
 Route::middleware('auth')->controller(PurchaseController::class)->group(function(){
     Route::get('/comprar', 'create')->name('purchases.create');
     Route::post('/comprar', 'store')->name('purchases.store');
+});
+
+Route::middleware('auth')->controller(CashClosingController::class)->group(function(){
+    Route::get('/cierre-de-caja/consultar', 'ask')->name('cash-closing.ask');
+    Route::get('/cierre-de-caja', 'show')->name('cash-closing.show');
 });
