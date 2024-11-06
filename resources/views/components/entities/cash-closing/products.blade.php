@@ -1,6 +1,4 @@
-@props([
-    'products'
-])
+@props(['products'])
 
 <x-table.simple>
     @foreach($products as $product)
@@ -34,5 +32,6 @@
     </x-table.simple.tr>
     @endforeach
 </x-table.simple>
-
-{{$products->links(data: ['scrollTo' => false])}}
+<div class="overflow-x-auto">
+    {{$products->links(data: ['scrollTo' => false])}}
+</div>

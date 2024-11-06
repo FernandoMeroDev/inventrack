@@ -27,12 +27,12 @@ class ReceiptSeeder extends Seeder
     {
         Receipt::factory($this->receipts_count)->create();
         foreach(Receipt::all() as $receipt){
-            $factory = Movement::factory($this->movements_count);
+            $movementFactory = Movement::factory($this->movements_count);
             $state = ['receipt_id' => $receipt->id];
             if($receipt->type->id == $this->sale->id){
                 $state['price'] = fake()->randomFloat(6, 0.01, 9999.99);
             }
-            $factory->state($state)->create();
+            $movementFactory->state($state)->create();
         }
     }
 }

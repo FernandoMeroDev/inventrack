@@ -21,6 +21,10 @@
                         <strong>Cierre de caja</strong>
                     </a>
 
+                    <a href="{{route('receipts.ask')}}" class="block mb-2">
+                        <strong>Comprobantes</strong>
+                    </a>
+
                     <a href="#" class="block mt-2">
                         <strong>Link</strong>
                     </a>

@@ -4,6 +4,7 @@ use App\Http\Controllers\CashClosingController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Sales\SaleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Receipts\ReceiptController;
 
 Route::view('/', 'welcome');
 
@@ -32,4 +33,9 @@ Route::middleware('auth')->controller(PurchaseController::class)->group(function
 Route::middleware('auth')->controller(CashClosingController::class)->group(function(){
     Route::get('/cierre-de-caja/consultar', 'ask')->name('cash-closing.ask');
     Route::get('/cierre-de-caja', 'show')->name('cash-closing.show');
+});
+
+Route::middleware('auth')->controller(ReceiptController::class)->group(function(){
+    Route::get('/comprobantes/consultar', 'ask')->name('receipts.ask');
+    Route::get('/comprobantes', 'index')->name('receipts.index');
 });

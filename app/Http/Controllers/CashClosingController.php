@@ -9,7 +9,6 @@ use App\Models\Receipts\Receipt;
 use App\Models\Receipts\ReceiptType;
 use App\Models\User;
 use App\Models\Warehouse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class CashClosingController extends Controller
@@ -30,16 +29,16 @@ class CashClosingController extends Controller
         }
         $validated['warehouse_name'] = Warehouse::find($validated['warehouse_id'])->name;
         $validated['total'] = '$' . number_format($products->sum('value'), 2, ',', ' ');
-        $products = $this->paginate(
-            $products, 10, $validated['page'] ?? 1, $request->url()
-        )->withQueryString();
+        $products = $this->simplePaginate(
+            $products, 2, $validated['page'] ?? 1, $request->url()
+        )->withQueryString()->fragment('products');
         return view('entities.cash-closing.show', [
             'products' => $products,
             'data' => $validated
         ]);
     }
 
-    private function query(array $validated)
+    private function query(array $validated): Collection
     {
         $soldProducts = Product::join('movements', 'movements.product_id', '=', 'products.id')
             ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
