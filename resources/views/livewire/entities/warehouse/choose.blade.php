@@ -41,6 +41,6 @@
             </x-table.simple.tr>
         @endforeach
     </x-table.simple>
-    {{$warehouses->links()}}
+    {{$warehouses->links(data: ['scrollTo' => false])}}
     <x-input-error :messages="$errors->get('warehouse_id')" />
 </div>

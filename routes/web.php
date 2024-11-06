@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Sales\SaleController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,9 @@ Route::middleware('auth')->controller(SaleController::class)->group(function(){
     Route::post('/vender/bodega', 'setWarehouse')->name('sales.set-warehouse');
     Route::get('/vender', 'create')->name('sales.create');
     Route::post('/vender', 'store')->name('sales.store');
+});
+
+Route::middleware('auth')->controller(PurchaseController::class)->group(function(){
+    Route::get('/comprar', 'create')->name('purchases.create');
+    Route::post('/comprar', 'store')->name('purchases.store');
 });
