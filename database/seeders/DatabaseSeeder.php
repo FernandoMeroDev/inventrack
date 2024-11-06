@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
             ReceiptTypeSeeder::class,
         ]);
 
-        Warehouse::factory(5)->create();
+        Warehouse::factory(25)->create();
 
         $this->call([
             ReceiptSeeder::class,

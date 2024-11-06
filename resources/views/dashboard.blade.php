@@ -9,7 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+                    <a href="{{route('sales.create')}}" class="block mb-2">
+                        <strong>Vender</strong>
+                    </a>
+
+                    <a href="#" class="block mt-2">
+                        <strong>Link</strong>
+                    </a>
                 </div>
             </div>
         </div>
