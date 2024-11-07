@@ -12,9 +12,10 @@
                     <h3 class="font-bold">Producto</h3>
                     <p>{{$movement->product->name}}</p>
                 </div>
-                <x-entities.receipts.show.product-modal
-                    :product="$movement->product"
+                <x-entities.products.modal
                     :name="'product-modal-' . $movement->product->id"
+                    :product="$movement->product"
+                    :warehouse-id="$movement->receipt->warehouse->id"
                 />
                 <div class="text-wrap col-span-1 pr-1">
                     <h3 class="font-bold">Cantidad</h3>

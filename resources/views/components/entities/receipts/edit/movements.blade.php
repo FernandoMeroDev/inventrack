@@ -16,9 +16,10 @@
                         <input name="movement_ids[]" hidden value="{{$movement->id}}" />
                         {{$movement->product->name}}
                     </div>
-                    <x-entities.receipts.edit.product-modal
-                        :product="$movement->product"
+                    <x-entities.products.modal
                         :name="'product-modal-' . $movement->product->id"
+                        :product="$movement->product"
+                        :warehouse_id="$movement->receipt->warehouse_id"
                     />
                     <div class="pr-1 col-span-1">
                         <p>Cantidad</p>

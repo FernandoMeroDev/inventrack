@@ -14,9 +14,10 @@
                 >
                     {{$product->name}}
                 </div>
-                <x-entities.cash-closing.show.product-modal
+                <x-entities.products.modal
                     :name="'product-modal-' . $product->id"
                     :$product
+                    :receipts="$product->receipts"
                 />
                 <div class="col-span-1 pr-1">
                     <p class="font-bold">Cantidad</p>

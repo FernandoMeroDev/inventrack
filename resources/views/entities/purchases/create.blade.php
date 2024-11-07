@@ -22,7 +22,7 @@
                     >{{old('comment')}}</x-textarea-input>
                     <x-input-error :messages="$errors->get('comment')" />
 
-                    <livewire:entities.purchases.products :$warehouse_id />
+                    <livewire:entities.purchases.products :warehouse_id="$warehouse_id ?? null" />
 
                     <x-primary-button class="self-center mt-8">
                         Guardar

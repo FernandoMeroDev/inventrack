@@ -20,7 +20,7 @@
                             <input name="product_ids[]" hidden value="{{$product->id}}" />
                             {{$product->name}}
                         </div>
-                        <x-entities.sales.product-modal
+                        <x-entities.products.modal
                             :$product
                             :warehouse-id="$warehouse_id"
                             :name="'product-modal-' . $product->id"
@@ -82,7 +82,7 @@
                         >
                             {{$product->name}}
                         </div>
-                        <x-entities.sales.product-modal
+                        <x-entities.products.modal
                             :$product
                             :warehouse-id="$warehouse_id"
                             :name="'product-modal-' . $product->id"

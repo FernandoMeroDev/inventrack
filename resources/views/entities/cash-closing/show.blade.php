@@ -33,7 +33,9 @@
                         />
                     </div>
 
-                    <a name="products" class="block text-sm mt-3">Productos</a>
+                    <a name="products" class="block text-sm mt-3">
+                        Productos
+                    </a>
                     <x-accordion.simple
                         :id="'filters'"
                         :title="'Filtros'"
