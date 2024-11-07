@@ -27,12 +27,12 @@
         @endforeach
     </x-table.simple>
     <h3 class="text-wrap mt-3">
-        {{$product['name']}}
+        {{$product->name}}
     </h3>
     <div>
         <img
             class="max-w-full border-gray-300 rounded-md"
-            src="{{asset('storage/' . $product['id'] . '.jpg')}}"
+            src="{{asset('storage/' . $product->id . '.jpg')}}"
             alt="Imagen de Producto"
         >
     </div>

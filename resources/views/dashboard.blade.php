@@ -25,6 +25,10 @@
                         <strong>Comprobantes</strong>
                     </a>
 
+                    <a href="{{route('inventory.ask')}}" class="block mb-2">
+                        <strong>Inventario</strong>
+                    </a>
+
                     <a href="#" class="block mt-2">
                         <strong>Link</strong>
                     </a>

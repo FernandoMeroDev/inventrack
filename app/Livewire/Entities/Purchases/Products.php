@@ -26,8 +26,22 @@ class Products extends Component
     #[Locked]
     public $selectedIds = [];
 
+    /**
+     * Warehouse id
+     */
+    #[Locked]
+    public $warehouse_id;
+
+    private $warehouse_id_private;
+
+    public function mount(int $warehouse_id)
+    {
+        $this->warehouse_id_private = $warehouse_id;
+    }
+
     public function render()
     {
+        $this->setPublicProperties(['warehouse_id']);
         return view('livewire.entities.purchases.products', [
             'products' => $this->products(),
             'selected' => $this->selected()
@@ -65,5 +79,14 @@ class Products extends Component
         return Product::whereNotIn('id', $this->selectedIds)
             ->where('name','LIKE', "%$this->search%")
             ->simplePaginate(4, pageName: 'products');
+    }
+
+    private function setPublicProperties(array $names): void
+    {
+        foreach($names as $name){
+            if(isset($this->{$name . '_private'})){
+                $this->{$name} = $this->{$name . '_private'};
+            }
+        }
     }
 }

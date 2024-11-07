@@ -11,7 +11,7 @@ use App\Models\Receipts\ReceiptType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PurchaseController extends Controller
+class CreateController extends Controller
 {
     public function create(Request $request)
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\CashClosing;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ShowRequest extends FormRequest
 {
@@ -33,7 +34,13 @@ class ShowRequest extends FormRequest
                 "after_or_equal:initial_date",
                 "before_or_equal:$date"
             ],
-            'page' => 'sometimes|integer|min:1'
+            'page' => 'sometimes|integer|min:1',
+            'search' => 'sometimes|nullable|string|max:255',
+            'order_by' => [
+                'sometimes', 'nullable', 'string',
+                Rule::in(['name', 'amount', 'value'])
+            ],
+            'order' => ['sometimes', 'nullable', 'string', Rule::in(['asc', 'desc'])],
         ];
     }
 
@@ -44,6 +51,9 @@ class ShowRequest extends FormRequest
             'warehouse_id' => 'bodega',
             'initial_date' => 'fecha inicial',
             'end_date' => 'fecha final',
+            'search' => 'buscar',
+            'order_by' => 'ordernar por',
+            'order' => 'orden'
         ];
     }
 }

@@ -16,7 +16,9 @@
                             {{$product->name}}
                         </div>
                         <x-entities.purchases.product-modal
-                            :$product :name="'product-modal-' . $product->id"
+                            :$product
+                            :warehouse-id="$warehouse_id"
+                            :name="'product-modal-' . $product->id"
                         />
                         <div class="pr-1 col-span-1">
                             <p>Cantidad</p>
@@ -62,7 +64,9 @@
                             {{$product->name}}
                         </div>
                         <x-entities.purchases.product-modal
-                            :$product :name="'product-modal-' . $product->id"
+                            :$product
+                            :warehouse-id="$warehouse_id"
+                            :name="'product-modal-' . $product->id"
                         />
                         <div class="col-span-2 flex justify-center items-end">
                             <button

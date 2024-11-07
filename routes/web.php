@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\CashClosingController;
-use App\Http\Controllers\Purchases\PurchaseController;
-use App\Http\Controllers\Sales\SaleController;
+use App\Http\Controllers\CashClosing\ShowController as CashClosingShowController;
+use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
+use App\Http\Controllers\Purchases\CreateController as PurchaseCreateController;
+use App\Http\Controllers\Sales\CreateController as SaleCreateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Receipts\ReceiptController;
 
@@ -18,19 +19,19 @@ Route::view('profile', 'profile')
 
 require __DIR__.'/auth.php';
 
-Route::middleware('auth')->controller(SaleController::class)->group(function(){
+Route::middleware('auth')->controller(SaleCreateController::class)->group(function(){
     Route::get('/vender/bodega', 'selectWarehouse')->name('sales.select-warehouse');
     Route::post('/vender/bodega', 'setWarehouse')->name('sales.set-warehouse');
     Route::get('/vender', 'create')->name('sales.create');
     Route::post('/vender', 'store')->name('sales.store');
 });
 
-Route::middleware('auth')->controller(PurchaseController::class)->group(function(){
+Route::middleware('auth')->controller(PurchaseCreateController::class)->group(function(){
     Route::get('/comprar', 'create')->name('purchases.create');
     Route::post('/comprar', 'store')->name('purchases.store');
 });
 
-Route::middleware('auth')->controller(CashClosingController::class)->group(function(){
+Route::middleware('auth')->controller(CashClosingShowController::class)->group(function(){
     Route::get('/cierre-de-caja/consultar', 'ask')->name('cash-closing.ask');
     Route::get('/cierre-de-caja', 'show')->name('cash-closing.show');
 });
@@ -41,4 +42,9 @@ Route::middleware('auth')->controller(ReceiptController::class)->group(function(
     Route::get('/comprobantes/{receipt}', 'show')->name('receipts.show');
     Route::get('/comprobantes/{receipt}/editar', 'edit')->name('receipts.edit');
     Route::put('/comprobantes/{receipt}', 'update')->name('receipts.update');
+});
+
+Route::middleware('auth')->controller(InventoryIndexController::class)->group(function(){
+    Route::get('/inventario/consultar', 'ask')->name('inventory.ask');
+    Route::get('/inventario', 'index')->name('inventory.index');
 });

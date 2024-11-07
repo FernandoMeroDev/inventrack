@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Cierre de caja
+            Inventario
         </h2>
     </x-slot>
 
@@ -9,29 +9,11 @@
         <div class="max-w-sm mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <span class="block text-sm">Usuario</span>
-                    <x-text-input :value="$inputs['user_name']" disabled />
-
                     <span class="block text-sm mt-3">Bodega</span>
-                    <x-text-input :value="$inputs['warehouse_name']" disabled />
+                    <x-text-input :value="$inputs['warehouse']->name" disabled />
 
-                    <span class="block text-sm mt-3">Total</span>
-                    <x-text-input :value="$inputs['total']" disabled />
-
-                    <span class="block text-sm mt-3">Intervalo</span>
-                    <div class="flex items-center">
-                        <x-date-input
-                            disabled
-                            value="{{$inputs['initial_date']}}"
-                            class="px-1 w-1/2"
-                        />
-                        <span class="mx-1">-</span>
-                        <x-date-input
-                            disabled
-                            value="{{$inputs['end_date']}}"
-                            class="px-1 w-1/2"
-                        />
-                    </div>
+                    <span class="block text-sm mt-3">Tipo</span>
+                    <x-text-input :value="$inputs['type'] == 'virtual' ? 'Virtual' : 'Físico'" disabled />
 
                     <a name="products" class="block text-sm mt-3">Productos</a>
                     <x-accordion.simple
@@ -60,8 +42,10 @@
                                 @php
                                     $orderByInputOptions = [
                                         'name' => 'Nombre',
-                                        'amount' => 'Cantidad',
-                                        'value' => 'Valor'
+                                        'existences' => 'Cantidad',
+                                        'min_stock' => 'Stock mínimo',
+                                        'lack' => 'Faltan',
+                                        'remain' => 'Quedan',
                                     ];
                                 @endphp
                                 @foreach($orderByInputOptions as $value => $label)
@@ -98,7 +82,56 @@
                             </div>
                         </form>
                     </x-accordion.simple>
-                    <x-entities.cash-closing.show.products :$products />
+                    <div class="mt-3">
+                        {{$products->links(data: ['scrollTo' => false])}}
+                    </div>
+                    <x-table.simple>
+                        @foreach($products as $product)
+                        <x-table.simple.tr>
+                            <x-table.simple.td>
+                                <div class="grid grid-cols-2">
+                                    <div
+                                        x-data x-on:click="$dispatch('open-modal', 'product-modal-{{$product['id']}}')"
+                                        class="text-wrap col-span-2"
+                                    >
+                                        {{$product->name}}
+                                    </div>
+                                    <x-entities.inventory.index.product-modal
+                                        :name="'product-modal-' . $product->id"
+                                        :$product
+                                        :warehouse-id="$inputs['warehouse']->id"
+                                    />
+                                    <div class="col-span-1 pr-1">
+                                        <p class="font-bold">Cantidad</p>
+                                        <x-number-input
+                                            value="{{$product->existences}}" disabled class="w-full h-6"
+                                        />
+                                    </div>
+                                    <div class="col-span-1">
+                                        <p class="font-bold">Mínimo</p>
+                                        <x-number-input
+                                            value="{{$product->min_stock}}" disabled class="w-full h-6"
+                                        />
+                                    </div>
+                                    <div class="col-span-1 pr-1">
+                                        <p class="font-bold">Faltan</p>
+                                        <x-number-input
+                                            value="{{$product->lack}}" disabled class="w-full h-6"
+                                        />
+                                    </div>
+                                    <div class="col-span-1">
+                                        <p class="font-bold">Quedan</p>
+                                        <x-number-input
+                                            value="{{$product->remain}}" disabled class="w-full h-6"
+                                        />
+                                    </div>
+                                </div>
+                            </x-table.simple.td>
+                        </x-table.simple.tr>
+                        @endforeach
+                    </x-table.simple>
+                    {{$products->links(data: ['scrollTo' => false])}}
+
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SaleController extends Controller
+class CreateController extends Controller
 {
     public function selectWarehouse()
     {
