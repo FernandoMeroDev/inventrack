@@ -14,7 +14,7 @@
                 <div class="text-wrap col-span-1 pr-1">
                     <h3 class="font-bold">Fecha</h3>
                     <p>
-                        {{date('d/m/Y H\h:s', strtotime($receipt->created_at))}}
+                        {{date('d/m/Y H\h:i', strtotime($receipt->created_at))}}
                     </p>
                 </div>
                 <div class="col-span-1">

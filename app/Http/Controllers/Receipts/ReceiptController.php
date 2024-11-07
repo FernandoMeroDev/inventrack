@@ -85,17 +85,25 @@ class ReceiptController extends Controller
         $validated = $request->validated();
         $receipt->update(['comment' => $validated['comment'] ?? '']);
         for($i = 0; $i < count($validated['movement_ids']); $i++){
-            $this->updateMovement([
-                'movement_id' => $validated['movement_ids'][$i],
-                'amount' => $validated['amounts'][$i],
-                'sale_price_id' => $validated['sale_price_ids'][$i],
-                'receipt' => $receipt
-            ]);
+            if($validated['amounts'][$i] > 0){
+                $this->updateMovement([
+                    'movement_id' => $validated['movement_ids'][$i],
+                    'amount' => $validated['amounts'][$i],
+                    'sale_price_id' => $validated['sale_price_ids'][$i],
+                    'receipt' => $receipt
+                ]);
+            } else {
+                $this->deleteMovement($validated['movement_ids'][$i]);
+            }
+        }
+        if($receipt->movements->count() < 1){
+            $receipt->delete();
+            return redirect()->route('receipts.ask');
         }
         return redirect()->route('receipts.edit', $receipt->id);
     }
 
-    private function updateMovement(array $data)
+    private function updateMovement(array $data): void
     {
         $movement = Movement::find($data['movement_id']);
         $salePrice = SalePrice::find($data['sale_price_id']);
@@ -116,7 +124,7 @@ class ReceiptController extends Controller
         $this->updateNextMovements($movement);
     }
 
-    private function updateNextMovements(Movement $movementUpdated)
+    private function updateNextMovements(Movement $movementUpdated): void
     {
         $movements = Movement::join('products', 'movements.product_id', '=', 'products.id')
             ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
@@ -138,5 +146,29 @@ class ReceiptController extends Controller
             }
             $previousMovement = $movement;
         }
+    }
+
+    private function deleteMovement(int $movement_id): void
+    {
+        $movementTarget = Movement::find($movement_id);
+        $nextMovements = Movement::join('products', 'movements.product_id', '=', 'products.id')
+            ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
+            ->join('warehouses', 'receipts.warehouse_id', '=', 'warehouses.id')
+            ->select('movements.*')
+            ->where('movements.id', '>', $movementTarget->id)
+            ->where('movements.product_id', $movementTarget->product->id)
+            ->where('receipts.warehouse_id', $movementTarget->receipt->warehouse_id)
+            ->get();
+        foreach($nextMovements as $movement){
+            if(
+                $movement->receipt->type->name == 'sale'
+                || $movement->receipt->type->name == 'retirement'
+            ){
+                $movement->update(['existences' => $movement->existences + $movementTarget->amount]);
+            } else {
+                $movement->update(['existences' => $movement->existences - $movementTarget->amount]);
+            }
+        }
+        $movementTarget->delete();
     }
 }

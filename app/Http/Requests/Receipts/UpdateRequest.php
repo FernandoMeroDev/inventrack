@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Receipts;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -23,13 +24,17 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $amount = $this->get('amount');
         return [
             'comment' => 'nullable|string|max:500',
             'movement_ids' => 'required|array|min:1',
             'movement_ids.*' => 'required|integer|exists:movements,id',
-            'amounts' => 'required|array|min:1',
+            'amounts' => 'required|array|min:0',
             'amounts.*' => 'required|integer|min:0|max:65000',
-            'sale_price_ids' => 'required|array|min:1',
+            'sale_price_ids' => [
+                Rule::requiredIf(function() use($amount) { return $amount > 0; }),
+                'array', 'min:1'
+            ],
             'sale_price_ids.*' => 'required|integer|exists:sale_prices,id'
         ];
     }

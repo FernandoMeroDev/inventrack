@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-span-1">
                         <p>Precio</p>
-                        <x-select-input name="sale_price_ids[]" required class="w-full h-6 pl-0 pt-0 pb-0">
+                        <x-select-input name="sale_price_ids[]" class="w-full h-6 pl-0 pt-0 pb-0">
                             @foreach($movement->product->salePrices as $salePrice)
                                 <template x-if="amount >= {{$salePrice->units_number}}">
                                     <option
