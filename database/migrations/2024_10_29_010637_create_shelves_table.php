@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('shelves', function (Blueprint $table) {
             $table->smallIncrements('id')->unsigned();
             $table->primary('id');
-            $table->string('name', 45);
+            $table->unsignedTinyInteger('number');
             $table->unsignedTinyInteger('warehouse_id');
             $table->foreign('warehouse_id', 'fk_shelves_warehouse')
                 ->references('id')->on('warehouses')

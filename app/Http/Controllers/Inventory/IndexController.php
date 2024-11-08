@@ -19,21 +19,24 @@ class IndexController extends Controller
     public function index(IndexRequest $request)
     {
         $validated = $request->validated();
-        if($validated['type'] === 'virtual')
-            $products = $this->queryVirtual($validated);
-        else
-            $products = $this->queryPhysical($validated);
-        $products = $this->filterandOrderProducts($products, $validated);
         $inputs = [
             'type' => $validated['type'],
             'warehouse' => Warehouse::find($validated['warehouse_id'])
         ];
+    
+        $products = $validated['type'] === 'virtual'
+            ? $this->queryVirtual($validated)
+            : $this->queryPhysical($validated);
+        $products = $this->filterandOrderProducts($products, $validated);
         $total_count = $products->count();
         $products = $this->simplePaginate(
             $products, 10, $validated['page'] ?? 1, $request->url()
         )->withQueryString()->fragment('products');
-        if($products->count() < 1 && $total_count > 0)
+
+        $outsidePageRange = $products->count() < 1 && $total_count > 0;
+        if($outsidePageRange)
             return $this->resetIndexPage($validated);
+
         return view('entities.inventory.index', [
             'products' => $products,
             'inputs' => $inputs,

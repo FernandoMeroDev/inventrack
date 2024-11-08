@@ -2,7 +2,6 @@
 
 namespace Database\Seeders\Shelves;
 
-use App\Models\Products\Product;
 use App\Models\Shelves\Level;
 use App\Models\Shelves\LevelProduct;
 use App\Models\Shelves\Shelf;
@@ -15,7 +14,7 @@ class ShelfSeeder extends Seeder
 {
     private int $shelves_per_warehouse_count = 10;
 
-    private int $levels_per_shelf_count = 4;
+    private int $levels_per_shelf_count = 5;
 
     private int $level_product_count = 300;
 
@@ -29,7 +28,9 @@ class ShelfSeeder extends Seeder
             Shelf::factory($this->shelves_per_warehouse_count)->state(new Sequence(
                 ...$this->shelfSequence($warehouse->id)
             ))->has(
-                Level::factory(4)->state(...$this->levelSequence())
+                Level::factory($this->levels_per_shelf_count)->state(new Sequence(
+                    ...$this->levelSequence()
+                ))
             )->create();
         }
         LevelProduct::factory($this->level_product_count)->create();
@@ -39,7 +40,7 @@ class ShelfSeeder extends Seeder
     {
         $sequence = [];
         for($i = 0; $i < $this->shelves_per_warehouse_count; $i++){
-            $sequence[] = ['name' => 'A' . ($i + 1), 'warehouse_id' => $warehouse_id];
+            $sequence[] = ['number' => ($i + 1), 'warehouse_id' => $warehouse_id];
         }
         return $sequence;
     }
@@ -48,7 +49,7 @@ class ShelfSeeder extends Seeder
     {
         $sequence = [];
         for($i = 0; $i < $this->levels_per_shelf_count; $i++){
-            $sequence[] = ['number' => ($i + 1)];
+            $sequence[] = ['number' => $i];
         }
         return $sequence;
     }

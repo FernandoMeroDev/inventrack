@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CashClosing\ShowController as CashClosingShowController;
+use App\Http\Controllers\Inventory\EditController as InventoryEditController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
+use App\Http\Controllers\Inventory\AuditController as InventoryAuditController;
 use App\Http\Controllers\Purchases\CreateController as PurchaseCreateController;
 use App\Http\Controllers\Sales\CreateController as SaleCreateController;
 use Illuminate\Support\Facades\Route;
@@ -47,4 +49,15 @@ Route::middleware('auth')->controller(ReceiptController::class)->group(function(
 Route::middleware('auth')->controller(InventoryIndexController::class)->group(function(){
     Route::get('/inventario/consultar', 'ask')->name('inventory.ask');
     Route::get('/inventario', 'index')->name('inventory.index');
+});
+
+Route::middleware('auth')->controller(InventoryEditController::class)->group(function(){
+    Route::get('/inventario/editar', 'edit')->name('inventory.edit');
+    Route::get('/inventario/editar/productos', 'editProducts')->name('inventory.edit-products');
+    Route::put('/inventario/{level}/productos', 'updateProducts')->name('inventory.update-products');
+});
+
+Route::middleware('auth')->controller(InventoryAuditController::class)->group(function(){
+    Route::get('/inventario/{warehouse}/auditar', 'askAudit')->name('inventory.ask-audit');
+    Route::post('/inventario/{warehouse}/auditar', 'audit')->name('inventory.audit');
 });

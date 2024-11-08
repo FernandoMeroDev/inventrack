@@ -26,7 +26,7 @@ class Product extends Model
                 ->join('warehouses', 'shelves.warehouse_id', '=', 'warehouses.id')
                 ->select(
                     'level_product.id',
-                    'shelves.name as shelf_name',
+                    'shelves.number as shelf_number',
                     'levels.number',
                     'level_product.amount as product_amount'
                 )->where('level_product.product_id', $this->id)
@@ -35,17 +35,26 @@ class Product extends Model
         return $levelProducts;
     }
 
-    public function remainIn(int $warehouse_id): int
+    public function remainIn(int $entity_id, string $entity = 'Warehouse'): int
     {
-        $lastMovement = static::join('movements', 'movements.product_id', '=', 'products.id')
-            ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
-            ->join('warehouses', 'receipts.warehouse_id', '=', 'warehouses.id')
-            ->select('movements.id', 'movements.existences')
-            ->where('movements.product_id', $this->id)
-            ->where('receipts.warehouse_id', $warehouse_id)
-            ->orderBy('id', 'desc')
-            ->first();
-        return $lastMovement?->existences ?? 0;
+        if($entity === 'Warehouse'){
+            $lastMovement = static::join('movements', 'movements.product_id', '=', 'products.id')
+                ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
+                ->join('warehouses', 'receipts.warehouse_id', '=', 'warehouses.id')
+                ->select('movements.id', 'movements.existences')
+                ->where('movements.product_id', $this->id)
+                ->where('receipts.warehouse_id', $entity_id)
+                ->orderBy('id', 'desc')
+                ->first();
+            return $lastMovement?->existences ?? 0;
+        } else if($entity === 'Level') {
+            return LevelProduct::select(
+                'level_product.id',
+                'level_product.amount'
+            )->where('level_product.product_id', $this->id)
+            ->where('level_product.level_id', $entity_id)
+            ->first()?->amount ?? 0;
+        }
     }
 
     public function lastMovementIn(int $warehouse_id): ?Movement

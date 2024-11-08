@@ -132,6 +132,22 @@
                     </x-table.simple>
                     {{$products->links(data: ['scrollTo' => false])}}
 
+                    @if($inputs['type'] == 'physical')
+                    <div class="mt-8 flex justify-between">
+                        <x-primary-link-button :href="route(
+                            'inventory.edit', ['warehouse_id' => $inputs['warehouse']->id]
+                        )">
+                            Editar
+                        </x-primary-link-button>
+
+                        <x-secondary-link-button :href="
+                            route('inventory.ask-audit', $inputs['warehouse']->id)
+                        ">
+                            Auditar
+                        </x-secondary-link-button>
+                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>

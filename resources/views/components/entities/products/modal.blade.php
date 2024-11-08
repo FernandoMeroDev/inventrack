@@ -84,7 +84,7 @@
         @forelse($product->levelsIn($warehouseId) as $level)
         <x-table.simple.tr>
             <x-table.simple.td>
-                {{$level->shelf_name}}
+                {{$level->shelf_number}}
             </x-table.simple.td>
             <x-table.simple.td>
                 {{$level->number}}

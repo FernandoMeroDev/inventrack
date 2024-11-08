@@ -34,9 +34,11 @@
 
                     <livewire:entities.warehouse.choose :required="true" />
 
-                    <x-primary-button class="self-center mt-8">
-                        Consultar
-                    </x-primary-button>
+                    <div class="mt-8 flex justify-center">
+                        <x-primary-button>
+                            Consultar
+                        </x-primary-button>
+                    </div>
                 </form>
             </div>
         </div>
