@@ -6,6 +6,7 @@ use App\Models\Receipts\Movement;
 use App\Models\Shelves\Level;
 use App\Models\Shelves\LevelProduct;
 use App\Models\Warehouse;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +17,23 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'image', 'min_stock'];
+
+    public function levelsIn(int $warehouseId): Collection
+    {
+        $levelProducts = LevelProduct::
+                join('levels', 'levels.id', '=', 'level_product.level_id')
+                ->join('shelves', 'levels.shelf_id', '=', 'shelves.id')
+                ->join('warehouses', 'shelves.warehouse_id', '=', 'warehouses.id')
+                ->select(
+                    'level_product.id',
+                    'shelves.name as shelf_name',
+                    'levels.number',
+                    'level_product.amount as product_amount'
+                )->where('level_product.product_id', $this->id)
+                ->where('warehouses.id', $warehouseId)
+                ->get();
+        return $levelProducts;
+    }
 
     public function remainIn(int $warehouse_id): int
     {

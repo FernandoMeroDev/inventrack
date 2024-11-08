@@ -96,7 +96,7 @@
                                     >
                                         {{$product->name}}
                                     </div>
-                                    <x-entities.inventory.index.product-modal
+                                    <x-entities.products.modal
                                         :name="'product-modal-' . $product->id"
                                         :$product
                                         :warehouse-id="$inputs['warehouse']->id"

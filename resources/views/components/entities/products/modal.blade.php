@@ -7,6 +7,8 @@
     'maxWidth' => '2xl'
 ])
 
+@use('App\Models\Warehouse')
+
 <x-modal {{$attributes}} :$name :$show :max-with="$maxWidth">
 <div class="p-3">
     <div class="flex justify-center">
@@ -25,7 +27,7 @@
     </div>
 
     @if($receipts)
-    <p class="font-bold mt-3">Comprobantes</p>
+    <h3 class="font-bold mt-3">Comprobantes</h3>
     <x-table.simple>
         @foreach($product->receipts as $receipt)
             <x-table.simple.tr>
@@ -41,18 +43,24 @@
         @endforeach
     </x-table.simple>
     @endif
-
+    
     @if($warehouseId)
-    <p class="font-bold mt-3">Quedan</p>
-    <x-number-input
-        :disabled="true"
-        value="{{$product->remainIn($warehouseId)}}"
-        class="w-full h-6"
-        id="remain"
-    />
+        @php
+            $warehouse = Warehouse::find($warehouseId);
+        @endphp
+        <h3 class="font-bold mt-3">Quedan</h3>
+        <x-number-input
+            :disabled="true"
+            value="{{$product->remainIn($warehouseId)}}"
+            class="w-full h-6"
+            id="remain"
+        />
+        <p>
+            En {{$warehouse->name}}.
+        </p>
     @endif
 
-    <p class="font-bold mt-3">Precios de venta</p>
+    <h3 class="font-bold mt-3">Precios de venta</h3>
     <x-table.simple>
         @foreach($product->salePrices as $salePrice)
             <x-table.simple.tr>
@@ -67,31 +75,36 @@
         @endforeach
     </x-table.simple>
 
-    <p class="font-bold mt-3">Ubicaciones</p>
+    @if($warehouseId)
+    <h3 class="font-bold mt-3">Ubicaciones</h3>
+    <p>
+        En {{$warehouse->name}}.
+    </p>
     <x-table.simple :col-tags="['Percha', 'Piso', 'Cantidad']">
+        @forelse($product->levelsIn($warehouseId) as $level)
         <x-table.simple.tr>
             <x-table.simple.td>
-                A1
+                {{$level->shelf_name}}
             </x-table.simple.td>
             <x-table.simple.td>
-                2
+                {{$level->number}}
             </x-table.simple.td>
             <x-table.simple.td>
-                5 unidades
+                {{$level->product_amount}}
+                {{$level->product_amount == 1 ? 'unidad' : 'unidades'}}
             </x-table.simple.td>
         </x-table.simple.tr>
+        @empty
         <x-table.simple.tr>
             <x-table.simple.td>
-                A3
+                No encontrado
             </x-table.simple.td>
-            <x-table.simple.td>
-                1
-            </x-table.simple.td>
-            <x-table.simple.td>
-                10 unidades
-            </x-table.simple.td>
+            <x-table.simple.td></x-table.simple.td>
+            <x-table.simple.td></x-table.simple.td>
         </x-table.simple.tr>
+        @endforelse
     </x-table.simple>
+    @endif
 
     <div class="flex justify-center mt-3">
         <x-secondary-button x-on:click.prevent="$dispatch('close')"
