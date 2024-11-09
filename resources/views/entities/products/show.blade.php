@@ -10,16 +10,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-sm">Nombre</h3>
-                    <p class="text-md font-bold">
+                    <p class="mb-3 text-md font-bold">
                         {{$product->name}}
                     </p>
 
-                    <div>
-                    <img
-                        class="mt-3 max-w-full border-gray-300 rounded-md"
-                        src="{{asset("storage/$product->id.jpg")}}"
-                        alt="Imagen de Producto"
-                    >
+                    <div class="mt-3 flex justify-center">
+                        <x-entities.products.image :$product />
                     </div>
 
                     <h3 class="text-sm mt-3">Precios de venta</h3>

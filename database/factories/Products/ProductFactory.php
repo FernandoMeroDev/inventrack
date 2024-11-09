@@ -18,7 +18,8 @@ class ProductFactory extends Factory
     {
         return [
             'name' => strtoupper(fake()->sentence()),
-            'min_stock' => fake()->numberBetween(1, 12)
+            'min_stock' => fake()->numberBetween(1, 12),
+            'image_uploaded' => true,
         ];
     }
 }

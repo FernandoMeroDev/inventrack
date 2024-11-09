@@ -9,7 +9,14 @@
         <div class="max-w-sm mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <a name="products" class="block text-sm mt-3">Productos</a>
+                    <div class="mb-3 flex justify-between items-end">
+                        <a name="products" class="block text-sm">Productos</a>
+                        <x-secondary-link-button
+                            :href="route('products.create')"
+                        >
+                            Agregar
+                        </x-secondary-link-button>
+                    </div>
                     <x-accordion.simple
                         :id="'filters'"
                         :title="'Filtros'"

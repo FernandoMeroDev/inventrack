@@ -17,18 +17,15 @@
     </div>
 
     <h3 class="text-wrap mt-3">
-        <a href="{{route('products.show', $product->id)}}">
+        <a class="text-lg font-bold" href="{{route('products.show', $product->id)}}">
             {{$product->name}}
         </a>
     </h3>
 
-    <div>
-    <img
-        class="max-w-full border-gray-300 rounded-md"
-        src="{{asset("storage/$product->id.jpg")}}"
-        alt="Imagen de Producto"
-    >
+    <div class="flex justify-center">
+        <x-entities.products.image :$product />
     </div>
+
 
     @if($receipts)
     <h3 class="font-bold mt-3">Comprobantes</h3>
