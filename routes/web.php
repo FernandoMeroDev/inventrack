@@ -4,6 +4,7 @@ use App\Http\Controllers\CashClosing\ShowController as CashClosingShowController
 use App\Http\Controllers\Inventory\EditController as InventoryEditController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
 use App\Http\Controllers\Inventory\AuditController as InventoryAuditController;
+use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Purchases\CreateController as PurchaseCreateController;
 use App\Http\Controllers\Sales\CreateController as SaleCreateController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,16 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->controller(ProductController::class)->group(function(){
+    Route::get('/productos', 'index')->name('products.index');
+    Route::get('/productos/crear', 'create')->name('products.create');
+    Route::post('/productos', 'store')->name('products.store');
+    Route::get('/productos/{product}', 'show')->name('products.show');
+    Route::get('/productos/{product}/editar', 'edit')->name('products.edit');
+    Route::put('/productos/{product}', 'update')->name('products.update');
+    Route::delete('/productos/{product}', 'destroy')->name('products.destroy');
+});
 
 Route::middleware('auth')->controller(SaleCreateController::class)->group(function(){
     Route::get('/vender/bodega', 'selectWarehouse')->name('sales.select-warehouse');

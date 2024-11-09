@@ -16,7 +16,11 @@
         >Regresar</x-secondary-button>
     </div>
 
-    <h3 class="text-wrap mt-3">{{$product->name}}</h3>
+    <h3 class="text-wrap mt-3">
+        <a href="{{route('products.show', $product->id)}}">
+            {{$product->name}}
+        </a>
+    </h3>
 
     <div>
     <img
