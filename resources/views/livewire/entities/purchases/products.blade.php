@@ -5,7 +5,7 @@
     @if($selected->isNotEmpty())
     <x-table.simple>
         @foreach($selected as $product)
-            <x-table.simple.tr>
+            <x-table.simple.tr wire:key="{{$product->id}}">
                 <x-table.simple.td>
                     <div class="grid grid-cols-2">
                         <div
@@ -22,9 +22,8 @@
                         <div class="pr-1 col-span-1">
                             <p>Cantidad</p>
                             <x-number-input
-                                x-model="amount"
+                                value="0"
                                 name="amounts[]"
-                                value="1"
                                 required
                                 min="1"
                                 max="65000"

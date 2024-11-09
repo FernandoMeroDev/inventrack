@@ -76,7 +76,7 @@
     </x-table.simple>
 
     @if($warehouseId)
-    <h3 class="font-bold mt-3">Ubicaciones</h3>
+    <h3 class="font-bold mt-3">Ubicaciones Físicas</h3>
     <p>
         En {{$warehouse->name}}.
     </p>

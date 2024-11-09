@@ -32,6 +32,7 @@
                             <x-text-input
                                 name="search" value="{{$filters['search'] ?? null}}"
                                 class="w-full" placeholder="escribe aqui..."
+                                max="255"
                             />
                             <div>
                                 <x-input-error :messages="$errors->get('search')" />
