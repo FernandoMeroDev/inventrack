@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Perchas
+            Editar Inventario
         </h2>
     </x-slot>
 
@@ -11,6 +11,9 @@
                 <div class="p-6 text-gray-900">
                     <span class="block text-sm mt-3">Bodega</span>
                     <x-text-input :value="$inputs['warehouse']->name" disabled id="warehouseFalseInput" />
+                    <x-secondary-link-button
+                        href="{{route('inventory.index', ['type' => 'physical', 'warehouse_id' => $inputs['warehouse']->id])}}" class="self-center mt-1"
+                    >Regregsar</x-secondary-link-button>
 
                     <div class="mt-3 flex justify-between items-end">
                         <a name="shelves" class="block text-sm">Perchas</a>
@@ -28,7 +31,8 @@
                                 <a href="{{route(
                                     'inventory.edit-products', ['shelf_id' => $shelf->id]
                                 )}}" class="inline-block w-full h-full">
-                                    Número: {{$shelf->number}}
+                                    <p>Percha: {{$shelf->number}}</p>
+                                    <p>Pisos: {{$shelf->levels->count()}}</p>
                                 </a>
                             </x-table.simple.td>
                         </x-table.simple.tr>

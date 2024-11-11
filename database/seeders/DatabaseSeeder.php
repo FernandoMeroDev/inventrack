@@ -4,16 +4,18 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Warehouse;
+use Database\Seeders\Products\ProductRealSeeder;
 use Database\Seeders\Products\ProductSeeder;
 use Database\Seeders\Receipts\ReceiptSeeder;
 use Database\Seeders\Receipts\ReceiptTypeSeeder;
+use Database\Seeders\Shelves\ShelfRealSeeder;
 use Database\Seeders\Shelves\ShelfSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    private bool $create_real_data = false;
+    private bool $create_real_data = true;
 
     /**
      * Seed the application's database.
@@ -33,11 +35,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User 0',
             'email' => 'test@example.com',
         ]);
-
-        User::factory()->create([
-            'name' => 'Test User 1',
-            'email' => 'test_1@example.com',
-        ]);
         
         $this->call([
             ProductSeeder::class,
@@ -55,8 +52,11 @@ class DatabaseSeeder extends Seeder
     private function createRealData(): void
     {
         $this->call([
+            UserSeeder::class,
             ReceiptTypeSeeder::class,
             WarehouseSeeder::class,
+            ShelfRealSeeder::class,
+            ProductRealSeeder::class, // TODO
         ]);
     }
 }

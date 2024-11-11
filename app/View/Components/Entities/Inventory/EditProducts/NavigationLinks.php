@@ -10,34 +10,58 @@ use Illuminate\View\Component;
 
 class NavigationLinks extends Component
 {
-    public ?array $previous;
-
-    public bool $previousExists = true;
-
-    public ?array $next;
-
-    public bool $nextExists = true;
-
     /**
      * Create a new component instance.
      */
     public function __construct(
         public Shelf $shelf,
         public Level $level,
-    ){
-        $this->previous = $this->previousLink();
-        $this->next = $this->nextLink();
-    }
+    ){}
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View|Closure|string
     {
-        return view('components.entities.inventory.edit-products.navigation-links');
+        return view('components.entities.inventory.edit-products.navigation-links', [
+            'previousShelfLink' => $this->previousShelfLink(),
+            'nextShelfLink' => $this->nextShelfLink(),
+            'previousLevelLink' => $this->previousLevelLink(),
+            'nextLevelLink' => $this->nextLevelLink(),
+        ]);
     }
 
-    public function previousLink()
+    public function previousShelfLink(): string
+    {
+        $previousShelf = Shelf::where('warehouse_id', $this->shelf->warehouse_id)
+            ->where('number', '<', $this->shelf->number)
+            ->orderBy('number', 'desc')
+            ->first();
+
+        if(is_null($previousShelf)) return 'none';
+
+        return route('inventory.edit-products', [
+            'shelf_id' => $previousShelf->id,
+            'level_number' => 1,
+        ]);
+    }
+
+    public function nextShelfLink(): string
+    {
+        $nextShelf = Shelf::where('warehouse_id', $this->shelf->warehouse_id)
+                ->where('number', '>', $this->shelf->number)
+                ->orderBy('number')
+                ->first();
+
+        if(is_null($nextShelf)) return 'none';
+
+        return route('inventory.edit-products', [
+            'shelf_id' => $nextShelf->id,
+            'level_number' => 1,
+        ]);
+    }
+
+    public function previousLevelLink(): string
     {
         $number = $this->level->number - 1;
         if($number < 0){
@@ -45,21 +69,21 @@ class NavigationLinks extends Component
                 ->where('number', '<', $this->shelf->number)
                 ->orderBy('number', 'desc')
                 ->first();
-            if(is_null($previousShelf)){
-                $this->previousExists = false;
-                return null;
-            }
-            return [
+
+            if(is_null($previousShelf)) return 'none';
+
+            return route('inventory.edit-products', [
                 'shelf_id' => $previousShelf->id,
-                'level_number' => 1,
-                'label' => "Percha $previousShelf->number"
-            ];
-        } else {
-            return $this->defaultLink($number);
+                'level_number' => $previousShelf->levels->count() - 1,
+            ]);
         }
+        return route('inventory.edit-products', [
+            'shelf_id' => $this->shelf->id,
+            'level_number' => $number,
+        ]);
     }
 
-    public function nextLink()
+    public function nextLevelLink(): string
     {
         $number = $this->level->number + 1;
         $levels_count = $this->shelf->levels->count();
@@ -68,26 +92,17 @@ class NavigationLinks extends Component
                 ->where('number', '>', $this->shelf->number)
                 ->orderBy('number')
                 ->first();
-            if(is_null($nextShelf)){
-                $this->nextExists = false;
-                return null;
-            }
-            return [
+
+            if(is_null($nextShelf)) return 'none';
+
+            return route('inventory.edit-products', [
                 'shelf_id' => $nextShelf->id,
                 'level_number' => 1,
-                'label' => "Percha $nextShelf->number"
-            ];
-        } else {
-            return $this->defaultLink($number);
+            ]);
         }
-    }
-
-    private function defaultLink(int $number): array
-    {
-        return [
+        return route('inventory.edit-products', [
             'shelf_id' => $this->shelf->id,
             'level_number' => $number,
-            'label' => "Piso $number",
-        ];
+        ]);
     }
 }

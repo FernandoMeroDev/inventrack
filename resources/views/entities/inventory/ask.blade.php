@@ -36,7 +36,7 @@
 
                     <div class="mt-8 flex justify-center">
                         <x-primary-button>
-                            Consultar
+                            Ver
                         </x-primary-button>
                     </div>
                 </form>

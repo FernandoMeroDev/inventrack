@@ -22,6 +22,9 @@
                         disabled
                         id="warehouseFalseInput" 
                     />
+                    <x-secondary-link-button
+                        href="{{route('inventory.edit', ['warehouse_id' => $inputs['shelf']->warehouse->id])}}" class="self-center mt-1"
+                    >Regregsar</x-secondary-link-button>
 
                     <span class="block text-sm mt-3">Percha</span>
                     <x-text-input
@@ -49,8 +52,8 @@
                     />
 
                     <div class="mt-8">
-                    <x-table.simple :col-tags="['Percha Número ' . $inputs['shelf']->number]">
-                        @foreach($inputs['shelf']->levels as $level)
+                    <x-table.simple :col-tags="['Percha ' . $inputs['shelf']->number]">
+                        @foreach($inputs['shelf']->levels->reverse() as $level)
                         <x-table.simple.tr>
                             <x-table.simple.td>
                                 <a

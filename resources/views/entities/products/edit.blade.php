@@ -41,6 +41,19 @@
                     </div>
 
                     <div>
+                        <label for="removeImageInput" class="flex items-center">
+                            <input
+                                name="remove_image"
+                                type="checkbox"
+                                id="removeImageInput"
+                                class="mr-1 rounded"
+                            />
+                            Quitar imagen
+                        </label>
+                        <x-input-error :messages="$errors->get('remove_image')" />
+                    </div>
+
+                    <div>
                     <label for="minStockInput" class="block">
                         Stock Mínimo
                     </label>
@@ -92,18 +105,18 @@
                         <x-table.simple.tr>
                             <x-table.simple.td>
                             <div class="flex justify-between">
-                                <x-secondary-button
+                                <x-entities.products.sale-price-button
                                     x-on:click="push()"
                                     class="bg-green-500 hover:bg-green-400"
                                 >
                                     <x-icons.cross color="#fff" class="w-3 h-3" />
-                                </x-secondary-button>
-                                <x-secondary-button
+                                </x-entities.products.sale-price-button>
+                                <x-entities.products.sale-price-button
                                     x-on:click="pop()"
                                     class="bg-red-500 hover:bg-red-400"
                                 >
                                     <x-icons.cross color="#fff" class="w-3 h-3 rotate-45" />
-                                </x-secondary-button>
+                                </x-entities.products.sale-price-button>
                             </div>
                             </x-table.simple.td>
                         </x-table.simple.tr>

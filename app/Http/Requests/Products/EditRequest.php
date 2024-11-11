@@ -20,7 +20,8 @@ class EditRequest extends FormRequest
                 'required', 'string', 'max:255',
                 Rule::unique('products', 'name')->ignore($product->id)
             ],
-            'image' => 'nullable|file|image|max:120',
+            'image' => 'nullable|file|image|max:50',
+            'remove_image' => 'sometimes|accepted',
             'min_stock' => 'required|integer|min:1|max:255',
             'units_numbers' => 'required|array|min:1|max:20',
             'units_numbers.*' => 'required|integer|min:1|max:255',
@@ -34,6 +35,7 @@ class EditRequest extends FormRequest
         return [
             'name' => 'nombre',
             'image' => 'imagen',
+            'remove_image' => 'remover imagen',
             'min_stock' => 'stock mínimo',
             'units_numbers' => 'numeros de unidades',
             'units_numbers.*' => 'numero de unidad #:position',

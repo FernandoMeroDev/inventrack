@@ -20,7 +20,9 @@ class ProductController extends Controller
     public function index(IndexRequest $request)
     {
         $validated = $request->validated();
-        $products = Product::where('name', 'LIKE', '%' . ($validated['search'] ?? null) . '%')->get();
+        $products = Product::where(
+            'name', 'LIKE', '%' . ($validated['search'] ?? null) . '%'
+        )->orderBy('name')->get();
         $total_count = $products->count();
         $products = $this->simplePaginate(
             $products, 10, $request->get('page', 1), $request->url()
@@ -88,7 +90,7 @@ class ProductController extends Controller
         $product->update([
             'name' => mb_strtoupper($validated['name']),
             'min_stock' => $validated['min_stock'],
-            'image_uploaded' => $product->image_updated || $request->hasFile('image')
+            'image_uploaded' => $product->image_uploaded || $request->hasFile('image')
         ]);
         foreach($product->salePrices as $salePrice) $salePrice->delete();
         for($i = 0; $i < count($validated['prices']); $i++){
@@ -102,11 +104,17 @@ class ProductController extends Controller
             $file_name = $product->id;
             Storage::disk('public')->putFileAs('/', $request->file('image'), "$file_name");
         }
+        if(isset($validated['remove_image'])){
+            Storage::disk('public')->delete("/$product->id");
+            $product->image_uploaded = false;
+            $product->save();
+        }
         return redirect()->route('products.show', $product->id);
     }
 
     public function destroy(Product $product)
     {
+        Storage::disk('public')->delete("/$product->id");
         $receipts = Receipt::join('movements', 'movements.receipt_id', '=', 'receipts.id')
             ->select('receipts.id')
             ->where('movements.product_id', $product->id)

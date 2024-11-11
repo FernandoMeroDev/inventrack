@@ -54,7 +54,7 @@
             :disabled="true"
             value="{{$product->remainIn($warehouseId)}}"
             class="w-full h-6"
-            id="remain"
+            id="remainFalseInput{{$product->id}}"
         />
         <p>
             En {{$warehouse->name}}.

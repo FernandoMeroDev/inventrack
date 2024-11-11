@@ -27,7 +27,7 @@
                 </div>
                 <div class="col-span-1">
                     <p class="font-bold">Valor</p>
-                    <x-number-input
+                    <x-text-input
                         value="{{'$' . number_format($product->value, 2, ',', ' ')}}" disabled class="w-full h-6"
                     />
                 </div>

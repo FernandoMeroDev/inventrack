@@ -8,7 +8,12 @@
     <div class="py-12">
         <div class="max-w-sm mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="{{route('products.store')}}" class="text-gray-900 p-6 space-y-3" method="POST">
+                <form
+                    action="{{route('products.store')}}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="text-gray-900 p-6 space-y-3"
+                >
                     @csrf
 
                     <div>
@@ -81,18 +86,18 @@
                         <x-table.simple.tr>
                             <x-table.simple.td>
                             <div class="flex justify-between">
-                                <x-secondary-button
+                                <x-entities.products.sale-price-button
                                     x-on:click="push()"
                                     class="bg-green-500 hover:bg-green-400"
                                 >
                                     <x-icons.cross color="#fff" class="w-3 h-3" />
-                                </x-secondary-button>
-                                <x-secondary-button
+                                </x-entities.products.sale-price-button>
+                                <x-entities.products.sale-price-button
                                     x-on:click="pop()"
                                     class="bg-red-500 hover:bg-red-400"
                                 >
                                     <x-icons.cross color="#fff" class="w-3 h-3 rotate-45" />
-                                </x-secondary-button>
+                                </x-entities.products.sale-price-button>
                             </div>
                             </x-table.simple.td>
                         </x-table.simple.tr>

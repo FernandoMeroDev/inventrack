@@ -50,7 +50,7 @@
                         {{$products->links(data: ['scrollTo' => false])}}
                     </div>
                     <x-table.simple :col-tags="['Nombre']">
-                        @foreach($products as $product)
+                        @forelse($products as $product)
                         <x-table.simple.tr>
                             <x-table.simple.td>
                                 <div class="grid grid-cols-2">
@@ -67,7 +67,13 @@
                                 </div>
                             </x-table.simple.td>
                         </x-table.simple.tr>
-                        @endforeach
+                        @empty
+                        <x-table.simple.tr>
+                            <x-table.simple.td>
+                                No encontrado.
+                            </x-table.simple.td>
+                        </x-table.simple.tr>
+                        @endforelse
                     </x-table.simple>
                     {{$products->links(data: ['scrollTo' => false])}}
                 </div>

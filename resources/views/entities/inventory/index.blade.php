@@ -121,7 +121,7 @@
                                         />
                                     </div>
                                     <div class="col-span-1">
-                                        <p class="font-bold">Quedan</p>
+                                        <p class="font-bold">Sobran</p>
                                         <x-number-input
                                             value="{{$product->remain}}" disabled class="w-full h-6"
                                         />

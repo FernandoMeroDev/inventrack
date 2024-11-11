@@ -16,7 +16,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image', 'min_stock'];
+    protected $fillable = ['name', 'image_uploaded', 'min_stock'];
 
     public function levelsIn(int $warehouseId): Collection
     {

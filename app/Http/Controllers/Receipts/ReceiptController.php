@@ -100,7 +100,7 @@ class ReceiptController extends Controller
             $receipt->delete();
             return redirect()->route('receipts.ask');
         }
-        return redirect()->route('receipts.edit', $receipt->id);
+        return redirect()->route('receipts.show', $receipt->id);
     }
 
     private function updateMovement(array $data): void

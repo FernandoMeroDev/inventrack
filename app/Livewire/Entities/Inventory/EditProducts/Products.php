@@ -110,6 +110,7 @@ class Products extends Component
     {
         return Product::whereNotIn('id', $this->productsIds)
             ->where('name','LIKE', "%$this->search%")
+            ->orderBy('name')
             ->simplePaginate(3, pageName: 'products');
     }
 
