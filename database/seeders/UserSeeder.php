@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Administrador',
-            'email' => 'admin@licenciado.com',
+            'email' => 'admin@ellicenciado.app',
             'password' => Hash::make(config('app.admin-password')),
         ]);
 
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         foreach($sellers as $name){
             User::factory()->create([
                 'name' => ucfirst($name),
-                'email' => "$name@licenciado.com",
+                'email' => "$name@ellicenciado.app",
                 'password' => '12345678',
             ]);
         }

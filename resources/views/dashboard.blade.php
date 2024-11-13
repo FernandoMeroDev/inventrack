@@ -8,11 +8,15 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+                <img class="w-full fill-current text-gray-500" src="/storage/logo_hd.jpg" alt="Logo">
+
                 <div class="
                     p-4 text-gray-900 
                     grid gap-3 justify-center justify-items-center
                     grid-cols-2 md:grid-cols-3 lg:grid-cols-6
                 ">
+
                     @php
                         $user = auth()->user();
                     @endphp
