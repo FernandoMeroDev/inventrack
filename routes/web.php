@@ -10,7 +10,7 @@ use App\Http\Controllers\Sales\CreateController as SaleCreateController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Receipts\ReceiptController;
 
-Route::view('/', 'welcome');
+Route::get('/', fn() => redirect('login'));
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

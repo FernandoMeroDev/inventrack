@@ -71,6 +71,7 @@ class ReceiptController extends Controller
 
     public function edit(Receipt $receipt)
     {
+        if($receipt->consolidated) abort(403);
         $data = ['receipt' => $receipt];
         if($receipt->type->name == 'sale'){
             $data['total'] = '$' . number_format(

@@ -8,30 +8,39 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <a href="{{route('products.index')}}" class="block mb-2">
-                        <strong>Productos</strong>
-                    </a>
+                <div class="
+                    p-4 text-gray-900 
+                    grid gap-3 justify-center justify-items-center
+                    grid-cols-2 md:grid-cols-3 lg:grid-cols-6
+                ">
+                    @php
+                        $user = auth()->user();
+                    @endphp
+                    @if($user->id == 1)
+                        <x-dashboard.products :href="route('products.index')">
+                            Productos
+                        </x-dashboard.products>
 
-                    <a href="{{route('sales.create')}}" class="block mb-2">
-                        <strong>Vender</strong>
-                    </a>
+                        <x-dashboard.purchases :href="route('purchases.create')">
+                            Comprar
+                        </x-dashboard.purchases>
 
-                    <a href="{{route('purchases.create')}}" class="block mb-2">
-                        <strong>Comprar</strong>
-                    </a>
+                        <x-dashboard.inventory :href="route('inventory.ask')">
+                            Inventario
+                        </x-dashboard.inventory>
+                    @endif
 
-                    <a href="{{route('cash-closing.ask')}}" class="block mb-2">
-                        <strong>Cierre de caja</strong>
-                    </a>
+                    <x-dashboard.sales :href="route('sales.create')">
+                        Vender
+                    </x-dashboard.sales>
 
-                    <a href="{{route('receipts.ask')}}" class="block mb-2">
-                        <strong>Comprobantes</strong>
-                    </a>
+                    <x-dashboard.cash-closing :href="route('cash-closing.ask')">
+                        Cierre de caja
+                    </x-dashboard.cash-closing>
 
-                    <a href="{{route('inventory.ask')}}" class="block mb-2">
-                        <strong>Inventario</strong>
-                    </a>
+                    <x-dashboard.receipts :href="route('receipts.ask')">
+                        Comprobantes
+                    </x-dashboard.receipts>
                 </div>
             </div>
         </div>
