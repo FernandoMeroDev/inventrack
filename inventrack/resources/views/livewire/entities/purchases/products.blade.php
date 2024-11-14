@@ -48,7 +48,7 @@
     <x-input-error :messages="$errors->get('amounts')" />
     <x-input-error :messages="$errors->get('amounts.*')" />
 
-    <x-text-input wire:model.live="search" placeholder="Buscar..." />
+    <x-text-input wire:model.live="search" placeholder="Buscar..." class="block" />
     @if($products->isNotEmpty())
     <x-table.simple>
         @foreach($products as $product)

@@ -146,7 +146,6 @@
                                     : null;
                                 nextId = (lastId === null) ? 1 : (lastId + 1);
                                 this.inputs.push({id: nextId, units_number: 1, value: 0});
-                                console.log(this.inputs);
                             },
 
                             pop(){

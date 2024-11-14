@@ -127,7 +127,6 @@
                                     : null;
                                 nextId = (lastId === null) ? 1 : (lastId + 1);
                                 this.inputs.push({id: nextId});
-                                console.log(this.inputs);
                             },
 
                             pop(){
