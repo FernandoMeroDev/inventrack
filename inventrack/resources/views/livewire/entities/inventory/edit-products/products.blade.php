@@ -42,7 +42,7 @@
 </x-table.simple>
 @endif
 
-<x-text-input wire:model.live="search" placeholder="Buscar..." />
+<x-text-input wire:model.live="search" placeholder="Buscar..." id="searchProductsFalseInput" />
 @if($searchedProducts->isNotEmpty())
 <x-table.simple>
     @foreach($searchedProducts as $product)

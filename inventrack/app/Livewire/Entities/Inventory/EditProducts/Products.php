@@ -77,14 +77,17 @@ class Products extends Component
 
     public function add($id): void
     {
-        $this->productsIds[] = $id;
+        $flipped = array_flip($this->productsIds);
+        if( ! Arr::exists($flipped, $id) ) $this->productsIds[] = $id;
     }
 
     public function remove($id): void
     {
         $flipped = array_flip($this->productsIds);
-        Arr::pull($flipped, $id);
-        $this->productsIds = array_flip($flipped);
+        if(Arr::exists($flipped, $id)){
+            Arr::pull($flipped, $id);
+            $this->productsIds = array_flip($flipped);
+        }
     }
 
     public function empty(): void
