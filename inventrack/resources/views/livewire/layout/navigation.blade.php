@@ -23,7 +23,7 @@ new class extends Component
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" wire:navigate>
+                    <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -34,28 +34,28 @@ new class extends Component
                         $user = auth()->user();
                     @endphp
                     @if($user->id == 1)
-                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
+                        <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                             Productos
                         </x-nav-link>
 
-                        <x-nav-link :href="route('purchases.create')" :active="request()->routeIs('purchases.create')" wire:navigate>
+                        <x-nav-link :href="route('purchases.create')" :active="request()->routeIs('purchases.create')">
                             Comprar
                         </x-nav-link>
 
-                        <x-nav-link :href="route('inventory.ask')" :active="request()->routeIs('inventory.*')" wire:navigate>
+                        <x-nav-link :href="route('inventory.ask')" :active="request()->routeIs('inventory.*')">
                             Inventario
                         </x-nav-link>
                     @endif
 
-                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')" wire:navigate>
+                    <x-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
                         Vender
                     </x-nav-link>
 
-                    <x-nav-link :href="route('cash-closing.ask')" :active="request()->routeIs('cash-closing.*')" wire:navigate>
+                    <x-nav-link :href="route('cash-closing.ask')" :active="request()->routeIs('cash-closing.*')">
                         Cierre de caja
                     </x-nav-link>
 
-                    <x-nav-link :href="route('receipts.ask')" :active="request()->routeIs('receipts.*')" wire:navigate>
+                    <x-nav-link :href="route('receipts.ask')" :active="request()->routeIs('receipts.*')">
                         Comprobantes
                     </x-nav-link>
                 </div>
@@ -77,7 +77,7 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile')" wire:navigate>
+                        <x-dropdown-link :href="route('profile')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
@@ -107,28 +107,28 @@ new class extends Component
     <div :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @if($user->id == 1)
-                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')" wire:navigate>
+                <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
                     Productos
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('purchases.create')" :active="request()->routeIs('purchases.create')" wire:navigate>
+                <x-responsive-nav-link :href="route('purchases.create')" :active="request()->routeIs('purchases.create')">
                     Comprar
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('inventory.ask')" :active="request()->routeIs('inventory.*')" wire:navigate>
+                <x-responsive-nav-link :href="route('inventory.ask')" :active="request()->routeIs('inventory.*')">
                     Inventario
                 </x-responsive-nav-link>
             @endif
 
-            <x-responsive-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')" wire:navigate>
+            <x-responsive-nav-link :href="route('sales.create')" :active="request()->routeIs('sales.create')">
                 Vender
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('cash-closing.ask')" :active="request()->routeIs('cash-closing.*')" wire:navigate>
+            <x-responsive-nav-link :href="route('cash-closing.ask')" :active="request()->routeIs('cash-closing.*')">
                 Cierre de caja
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('receipts.ask')" :active="request()->routeIs('receipts.*')" wire:navigate>
+            <x-responsive-nav-link :href="route('receipts.ask')" :active="request()->routeIs('receipts.*')">
                 Comprobantes
             </x-responsive-nav-link>
         </div>
@@ -141,7 +141,7 @@ new class extends Component
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                <x-responsive-nav-link :href="route('profile')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
