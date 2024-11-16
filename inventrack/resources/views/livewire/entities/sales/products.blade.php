@@ -69,7 +69,12 @@
     <x-input-error :messages="$errors->get('sale_price_ids')" />
     <x-input-error :messages="$errors->get('sale_price_ids.*')" />
 
-    <x-text-input wire:model.live="search" placeholder="Buscar..." class="block" id="searchProductsFalseInput" />
+    <x-text-input
+        wire:model.live.debounce.250ms="search" 
+        placeholder="Buscar..." 
+        class="block" 
+        id="searchProductsFalseInput" 
+    />
     @if($products->isNotEmpty())
     <x-table.simple>
         @foreach($products as $product)

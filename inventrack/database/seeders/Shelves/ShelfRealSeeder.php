@@ -34,6 +34,8 @@ class ShelfRealSeeder extends Seeder
         20 => 4,
         21 => 4,
         22 => 4,
+        23 => 4,
+        24 => 4
     ];
 
     // shelf_number => shelf_levels

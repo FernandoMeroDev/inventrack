@@ -13,7 +13,7 @@
                     <x-text-input :value="$inputs['warehouse']->name" disabled id="warehouseFalseInput" />
                     <x-secondary-link-button
                         href="{{route('inventory.index', ['type' => 'physical', 'warehouse_id' => $inputs['warehouse']->id])}}" class="self-center mt-1"
-                    >Regregsar</x-secondary-link-button>
+                    >Regresar</x-secondary-link-button>
 
                     <div class="mt-3 flex justify-between items-end">
                         <a name="shelves" class="block text-sm">Perchas</a>
@@ -32,7 +32,7 @@
                                     'inventory.edit-products', ['shelf_id' => $shelf->id]
                                 )}}" class="inline-block w-full h-full">
                                     <p>Percha: {{$shelf->number}}</p>
-                                    <p>Pisos: {{$shelf->levels->count()}}</p>
+                                    <p>Pisos: {{$shelf->levels->count() - 1}}</p>
                                 </a>
                             </x-table.simple.td>
                         </x-table.simple.tr>
