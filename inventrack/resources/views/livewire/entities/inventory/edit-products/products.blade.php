@@ -1,7 +1,7 @@
 <div>
 @if($products->isNotEmpty())
 <x-table.simple>
-    @foreach($products as $product)
+    @foreach($products as $i => $product)
         <x-table.simple.tr>
             <x-table.simple.td>
                 <div class="grid grid-cols-2">
@@ -23,7 +23,8 @@
                         </label>
                         <x-number-input
                             name="amounts[]"
-                            value="{{$product->amount}}"
+                            value="{{$amounts[$i]}}"
+                            x-on:keyup="$wire.changeAmount({{$i}}, $event.target.value)"
                             min="1" max="255"
                             id="amountInput{{$product->id}}"
                             class="w-full h-6 pl-1"

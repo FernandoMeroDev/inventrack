@@ -4,11 +4,11 @@ namespace App\Livewire\Entities\Inventory\EditProducts;
 
 use App\Models\Products\Product;
 use App\Models\Shelves\Shelf;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -31,6 +31,14 @@ class Products extends Component
     private $productsIds_private;
 
     /**
+     * Amounts in level
+     */
+    #[Locked]
+    public $amounts = [];
+
+    private $amounts_private;
+
+    /**
      * Shelf id
      */
     #[Locked]
@@ -50,15 +58,17 @@ class Products extends Component
     {
         $this->shelf_id_private = $shelf_id;
         $this->level_id_private = $level_id;
-        $this->productsIds_private = Product::join('level_product', 'level_product.product_id', '=', 'products.id')
-            ->select('products.id', 'products.name', 'level_product.amount')
+        $products = Product::join('level_product', 'level_product.product_id', '=', 'products.id')
+            ->select('products.id', 'level_product.amount')
             ->where('level_product.level_id', $level_id)
-            ->get()->pluck('id')->toArray();
+            ->get();
+        $this->productsIds_private = $products->pluck('id')->toArray();
+        $this->amounts_private = $products->pluck('amount')->toArray();
     }
 
     public function render()
     {
-        $this->setPublicProperties(['shelf_id', 'level_id', 'productsIds']);
+        $this->setPublicProperties(['shelf_id', 'level_id', 'productsIds', 'amounts']);
         $products = $this->products();
         $searchedProducts = $this->searchedProducts();
         return view('livewire.entities.inventory.edit-products.products', [
@@ -78,16 +88,27 @@ class Products extends Component
     public function add($id): void
     {
         $flipped = array_flip($this->productsIds);
-        if( ! Arr::exists($flipped, $id) ) $this->productsIds[] = $id;
+        if( ! Arr::exists($flipped, $id) ){
+            $this->productsIds[] = $id;
+            $this->amounts[] = 0;
+        };
     }
 
     public function remove($id): void
     {
         $flipped = array_flip($this->productsIds);
         if(Arr::exists($flipped, $id)){
+            $key = $flipped[$id];
+            Arr::pull($this->amounts, $key);
             Arr::pull($flipped, $id);
             $this->productsIds = array_flip($flipped);
         }
+    }
+
+    #[Renderless]
+    public function changeAmount($i, $amount)
+    {
+        $this->amounts[$i] = $amount;
     }
 
     public function empty(): void
@@ -98,13 +119,13 @@ class Products extends Component
     private function products(): BaseCollection
     {
         $products = collect([]);
-        foreach($this->productsIds as $id){
+        foreach($this->productsIds as $key => $id){
             $product = Product::find($id);
             $product->amount = $product->remainIn(
                 $this->level_id,
                 entity: 'Level'
             );
-            $products->push($product);
+            $products->put($key, $product);
         };
         return $products;
     }
