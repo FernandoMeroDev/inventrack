@@ -40,10 +40,15 @@
                         <div class="col-span-1">
                             <p>Precio</p>
                             <x-select-input name="sale_price_ids[]" required class="w-full h-6 pl-0 pt-0 pb-0">
-                                @foreach($product->salePrices as $salePrice)
+                                @php
+                                    $salePrices = $product->salePrices->sortBy('units_number', descending: true);
+                                @endphp
+                                @foreach($salePrices as $salePrice)
                                     <template x-if="amount >= {{$salePrice->units_number}}">
                                         <option
                                             value="{{$salePrice->id}}"
+                                            data-units-number="{{$salePrice->units_number}}"
+                                            x-bind:selected="$el.dataset.unitsNumber >= amount"
                                         >{{$salePrice->valueFormated()}}</option>
                                     </template>
                                 @endforeach
