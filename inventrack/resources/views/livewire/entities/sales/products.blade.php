@@ -4,12 +4,13 @@
     </span>
     @if($selected->isNotEmpty())
     <x-table.simple>
-        @foreach($selected as $product)
-            <x-table.simple.tr>
+        @foreach($selected as $i => $product)
+            <x-table.simple.tr wire:key="{{$product->id}}">
                 <x-table.simple.td>
                     <div
                         x-data="movementInput(
-                            {{$product->remainIn($warehouse_id)}}
+                            {{$product->remainIn($warehouse_id)}},
+                            {{$amounts[$i]}}
                         )"
                         class="grid grid-cols-2"
                     >
@@ -30,7 +31,7 @@
                             <x-number-input
                                 x-model="amount"
                                 name="amounts[]"
-                                value="1"
+                                x-on:keyup="$wire.changeAmount({{$i}}, $event.target.value)"
                                 required
                                 min="1"
                                 max="{{$product->remainIn($warehouse_id)}}"
@@ -126,9 +127,9 @@
     <script>
         // Alpine components
         document.addEventListener('alpine:init', () => {
-            Alpine.data('movementInput', (remain) => ({
+            Alpine.data('movementInput', (remain, amount) => ({
                 remainInWarehouse: remain,
-                amount: 1,
+                amount: amount,
             }));
         })
     </script>
