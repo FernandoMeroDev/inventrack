@@ -27,6 +27,7 @@ class Product extends Model
                 ->select(
                     'level_product.id',
                     'shelves.number as shelf_number',
+                    'shelves.refrigerator as shelf_refrigerator',
                     'levels.number',
                     'level_product.amount as product_amount'
                 )->where('level_product.product_id', $this->id)

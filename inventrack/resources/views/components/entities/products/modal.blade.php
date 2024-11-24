@@ -85,10 +85,20 @@
         @forelse($product->levelsIn($warehouseId) as $level)
         <x-table.simple.tr>
             <x-table.simple.td>
-                {{$level->shelf_number}}
+                @if($level->shelf_refrigerator)
+                <span class="text-blue-300">
+                    Refri {{$level->shelf_number}}
+                </span>
+                @else
+                    Percha {{$level->shelf_number}}
+                @endif
             </x-table.simple.td>
             <x-table.simple.td>
-                {{$level->number}}
+                @if($level->number > 0)
+                    Piso {{$level->number}}
+                @else
+                    Alrededores
+                @endif
             </x-table.simple.td>
             <x-table.simple.td>
                 {{$level->product_amount}}

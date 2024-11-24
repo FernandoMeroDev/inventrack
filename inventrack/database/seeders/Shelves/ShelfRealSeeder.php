@@ -7,6 +7,7 @@ use App\Models\Shelves\Shelf;
 use App\Models\Warehouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class ShelfRealSeeder extends Seeder
 {
@@ -35,7 +36,11 @@ class ShelfRealSeeder extends Seeder
         21 => 4,
         22 => 4,
         23 => 4,
-        24 => 4
+        24 => 4,
+        25 => 4,
+        26 => 4,
+        27 => 4,
+        28 => 4,
     ];
 
     // shelf_number => shelf_levels
@@ -61,20 +66,23 @@ class ShelfRealSeeder extends Seeder
     {
         $this->createShelves(
             $this->depositShelves,
-            Warehouse::where('name', 'Depósito')->first()
+            Warehouse::where('name', 'Depósito')->first(),
+            refrigerators: [2, 3, 4, 5, 6, 7, 8, 23, 24, 27, 28]
         );
         $this->createShelves(
             $this->liquorStoreShelves,
-            Warehouse::where('name', 'Licoreria')->first()
+            Warehouse::where('name', 'Licoreria')->first(),
+            refrigerators: [3, 4, 7, 8]
         );
     }
 
-    private function createShelves(array $shelves, Warehouse $warehouse): void
+    private function createShelves(array $shelves, Warehouse $warehouse, array $refrigerators): void
     {
         foreach($shelves as $number => $levels){
             $shelf = Shelf::create([
                 'number' => $number,
-                'warehouse_id' => $warehouse->id
+                'warehouse_id' => $warehouse->id,
+                'refrigerator' => Arr::exists(array_flip($refrigerators), $number)
             ]);
             for($i = 0; $i <= $levels; $i++){
                 Level::create([

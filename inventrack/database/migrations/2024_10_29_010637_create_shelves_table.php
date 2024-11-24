@@ -15,6 +15,7 @@ return new class extends Migration
             $table->smallIncrements('id')->unsigned();
             $table->primary('id');
             $table->unsignedTinyInteger('number');
+            $table->boolean('refrigerator')->default(false);
             $table->unsignedTinyInteger('warehouse_id');
             $table->foreign('warehouse_id', 'fk_shelves_warehouse')
                 ->references('id')->on('warehouses')
