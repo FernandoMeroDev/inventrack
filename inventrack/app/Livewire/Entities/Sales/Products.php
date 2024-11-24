@@ -48,8 +48,6 @@ class Products extends Component
 
     public function render()
     {
-        dump($this->selectedIds);
-        dump($this->amounts);
         $this->setPublicProperties(['warehouse_id']);
         return view('livewire.entities.sales.products', [
             'products' => $this->products(),
