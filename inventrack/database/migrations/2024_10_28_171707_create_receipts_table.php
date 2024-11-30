@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->mediumIncrements('id')->unsigned();
             $table->primary('id');
+            $table->date('issuance_date')->nullable()->default(null);
             $table->string('comment', 500)->nullable()->default(null);
             $table->tinyInteger('consolidated')->unsigned()->nullable()->default(null);
             $table->timestamps();

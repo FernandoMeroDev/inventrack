@@ -11,6 +11,21 @@
                 <form action="{{route('sales.store')}}" method="POST" class="p-6 flex flex-col text-gray-900">
                     @csrf
 
+                    <label for="issuanceDateInput">
+                        Fecha de emisión <span class="text-red-500">*</span>
+                    </label>
+                    @php
+                        $date = date('Y-m-d');
+                        $aWeekAgoDate = date('Y-m-d', mktime(date('H'), day: date('j') - 7));
+                    @endphp
+                    <x-date-input
+                        value="{{old('issuance_date', $date)}}"
+                        name="issuance_date"
+                        id="issuanceDateInput"
+                        required min="{{$aWeekAgoDate}}" max="{{$date}}"
+                    />
+                    <x-input-error :messages="$errors->get('issuance_date')" />
+
                     <span>
                         Bodega <span class="text-red-500">*</span>
                     </span>

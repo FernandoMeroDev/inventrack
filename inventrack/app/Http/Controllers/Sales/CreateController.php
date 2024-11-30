@@ -67,6 +67,7 @@ class CreateController extends Controller
     private function storeReceipt(array $validated): Receipt
     {
         return Receipt::create([
+            'issuance_date' => $validated['issuance_date'],
             'comment' => $validated['comment'] ?? null,
             'consolidated' => false,
             'type_id' => ReceiptType::where('name', 'sale')->first()->id,

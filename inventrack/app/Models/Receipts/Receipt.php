@@ -14,7 +14,7 @@ class Receipt extends Model
     use HasFactory;
 
     protected $fillable = [
-        'comment', 'consolidated', 'type_id', 'warehouse_id', 'user_id'
+        'issuance_date', 'comment', 'consolidated', 'type_id', 'warehouse_id', 'user_id'
     ];
 
     public function type(): BelongsTo

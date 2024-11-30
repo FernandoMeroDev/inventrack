@@ -63,8 +63,8 @@ class ShowController extends Controller
         $products = Product::join('movements', 'movements.product_id', '=', 'products.id')
             ->join('receipts', 'movements.receipt_id', '=', 'receipts.id')
             ->select('products.id', 'products.name')
-            ->where('receipts.created_at', '>=', $validated['initial_date'] . ' 00:00:00')
-            ->where('receipts.created_at', '<=', $validated['end_date'] . ' 23:59:59')
+            ->where('receipts.issuance_date', '>=', $validated['initial_date'] . ' 00:00:00')
+            ->where('receipts.issuance_date', '<=', $validated['end_date'] . ' 23:59:59')
             ->where('receipts.warehouse_id', $validated['warehouse_id'])
             ->where('receipts.type_id', ReceiptType::where('name', 'sale')->first()->id);
         if(isset($validated['search'])){

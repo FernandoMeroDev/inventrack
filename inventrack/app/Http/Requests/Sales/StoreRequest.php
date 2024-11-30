@@ -13,8 +13,14 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $date = date('Y-m-d');
+        $aWeekAgoDate = date('Y-m-d', mktime(date('H'), day: date('j') - 7));
         return [
             'warehouse_id' => 'required|integer|exists:warehouses,id',
+            'issuance_date' => [
+                'required', 'date_format:Y-m-d',
+                "after_or_equal:$aWeekAgoDate", "before_or_equal:$date"
+            ],
             'comment' => 'nullable|string|max:500',
             'product_ids' => 'required|array|min:1',
             'product_ids.*' => 'required|integer|exists:products,id',
