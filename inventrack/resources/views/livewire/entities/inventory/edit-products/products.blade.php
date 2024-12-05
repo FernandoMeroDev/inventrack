@@ -24,7 +24,7 @@
                         <x-number-input
                             name="amounts[]"
                             value="{{$amounts[$i]}}"
-                            x-on:keyup="$wire.changeAmount({{$i}}, $event.target.value)"
+                            x-on:change="$wire.changeAmount({{$i}}, $event.target.value)"
                             min="1" max="255"
                             id="amountInput{{$product->id}}"
                             class="w-full h-6 pl-1"

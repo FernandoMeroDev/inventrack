@@ -114,6 +114,7 @@ class Products extends Component
     public function empty(): void
     {
         $this->productsIds = [];
+        $this->amounts = [];
     }
 
     private function products(): BaseCollection
