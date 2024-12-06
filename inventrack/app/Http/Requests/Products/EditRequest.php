@@ -22,7 +22,7 @@ class EditRequest extends FormRequest
             ],
             'image' => 'nullable|file|image|max:50',
             'remove_image' => 'sometimes|accepted',
-            'min_stock' => 'required|integer|min:1|max:255',
+            'min_stock' => 'required|integer|min:0|max:255',
             'units_numbers' => 'required|array|min:1|max:20',
             'units_numbers.*' => 'required|integer|min:1|max:255',
             'prices' => 'required|array|min:1|max:20',

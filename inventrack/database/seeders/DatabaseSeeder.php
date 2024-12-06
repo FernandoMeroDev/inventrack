@@ -15,7 +15,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    private bool $create_real_data = false;
+    private bool $create_real_data = true;
 
     /**
      * Seed the application's database.

@@ -18,6 +18,13 @@
                         <x-entities.products.image :$product />
                     </div>
 
+                    <h3 class="text-sm mt-3">Srock Mínimo</h3>
+
+                    <x-number-input
+                        id="minStockFalseInput"
+                        readonly value="{{$product->min_stock}}"
+                    />
+
                     <h3 class="text-sm mt-3">Precios de venta</h3>
                     <x-table.simple>
                         @foreach($product->salePrices as $salePrice)

@@ -59,7 +59,7 @@
                     </label>
                     <x-number-input
                         name="min_stock" id="minStockInput"
-                        required min="1" max="255" value="{{old('min_stock', $product->min_stock)}}"
+                        required min="0" max="255" value="{{old('min_stock', $product->min_stock)}}"
                     />
                     <x-input-error :messages="$errors->get('min_stock')" />
                     </div>

@@ -16,7 +16,7 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:products,name',
             'image' => 'nullable|file|image|max:50',
-            'min_stock' => 'required|integer|min:1|max:255',
+            'min_stock' => 'required|integer|min:0|max:255',
             'units_numbers' => 'required|array|min:1|max:20',
             'units_numbers.*' => 'required|integer|min:1|max:255',
             'prices' => 'required|array|min:1|max:20',
