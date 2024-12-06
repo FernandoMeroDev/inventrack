@@ -39,11 +39,25 @@
                     <label for="minStockInput" class="block">
                         Stock Mínimo
                     </label>
-                    <x-number-input
-                        name="min_stock" id="minStockInput"
-                        required min="0" max="255" value="{{old('min_stock')}}"
-                    />
+                    <x-table.simple>
+                        @foreach($warehouses as $key => $warehouse)
+                            <x-table.simple.tr>
+                                <x-table.simple.td>
+                                    {{$warehouse->name}}:
+                                </x-table.simple.td>
+                                <x-table.simple.td>
+                                    <x-number-input
+                                        name="min_stocks[{{$warehouse->id}}]"
+                                        id="minStockInput{{$key}}"
+                                        required min="0" max="255"
+                                        value="{{old('min_stocks.'.$warehouse->id)}}"
+                                    />
+                                </x-table.simple.td>
+                            </x-table.simple.tr>
+                        @endforeach
+                    </x-table.simple>
                     <x-input-error :messages="$errors->get('min_stock')" />
+                    <x-input-error :messages="$errors->get('min_stock.*')" />
                     </div>
 
                     <div

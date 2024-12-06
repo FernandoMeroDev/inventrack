@@ -18,12 +18,19 @@
                         <x-entities.products.image :$product />
                     </div>
 
-                    <h3 class="text-sm mt-3">Srock Mínimo</h3>
-
-                    <x-number-input
-                        id="minStockFalseInput"
-                        readonly value="{{$product->min_stock}}"
-                    />
+                    <h3 class="text-sm mt-3">Stock Mínimo</h3>
+                    <x-table.simple>
+                        @foreach($product->warehouses as $warehouse)
+                            <x-table.simple.tr>
+                                <x-table.simple.td>
+                                    {{$warehouse->name}}:
+                                </x-table.simple.td>
+                                <x-table.simple.td>
+                                    {{$warehouse->pivot->min_stock}}
+                                </x-table.simple.td>
+                            </x-table.simple.tr>
+                        @endforeach
+                    </x-table.simple>
 
                     <h3 class="text-sm mt-3">Precios de venta</h3>
                     <x-table.simple>

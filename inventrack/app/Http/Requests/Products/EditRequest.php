@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Products;
 
+use App\Models\Warehouse;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -15,6 +16,7 @@ class EditRequest extends FormRequest
     public function rules(): array
     {
         $product = $this->route('product');
+        $warehouses = Warehouse::all();
         return [
             'name' => [
                 'required', 'string', 'max:255',
@@ -22,7 +24,12 @@ class EditRequest extends FormRequest
             ],
             'image' => 'nullable|file|image|max:50',
             'remove_image' => 'sometimes|accepted',
-            'min_stock' => 'required|integer|min:0|max:255',
+            'min_stocks' => [
+                'required',
+                'array:'.$warehouses->pluck('id')->join(','),
+                'size:'.$warehouses->count()
+            ],
+            'min_stocks.*' => 'required|integer|min:0|max:255',
             'units_numbers' => 'required|array|min:1|max:20',
             'units_numbers.*' => 'required|integer|min:1|max:255',
             'prices' => 'required|array|min:1|max:20',
@@ -36,7 +43,8 @@ class EditRequest extends FormRequest
             'name' => 'nombre',
             'image' => 'imagen',
             'remove_image' => 'remover imagen',
-            'min_stock' => 'stock mínimo',
+            'min_stocks' => 'stocks mínimos',
+            'min_stocks.*' => 'stock mínimo #:position',
             'units_numbers' => 'numeros de unidades',
             'units_numbers.*' => 'numero de unidad #:position',
             'prices' => 'precios',

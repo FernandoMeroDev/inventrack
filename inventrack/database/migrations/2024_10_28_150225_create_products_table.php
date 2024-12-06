@@ -16,7 +16,6 @@ return new class extends Migration
             $table->primary('id');
             $table->string('name', 255)->unique();
             $table->boolean('image_uploaded')->default(false);
-            $table->unsignedTinyInteger('min_stock');
             $table->timestamps();
         });
     }

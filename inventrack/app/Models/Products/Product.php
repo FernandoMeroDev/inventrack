@@ -16,7 +16,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image_uploaded', 'min_stock'];
+    protected $fillable = ['name', 'image_uploaded'];
 
     public function levelsIn(int $warehouseId): Collection
     {
@@ -81,5 +81,10 @@ class Product extends Model
     public function levels(): BelongsToMany
     {
         return $this->belongsToMany(Level::class)->withPivot('amount');
+    }
+
+    public function warehouses(): BelongsToMany
+    {
+        return $this->belongsToMany(Warehouse::class)->withPivot('id', 'min_stock');
     }
 }

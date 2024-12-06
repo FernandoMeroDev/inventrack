@@ -62,7 +62,7 @@ class IndexController extends Controller
         $products = Product::orderBy('name')->get();
         foreach($products as $product){
             $product->existences = $product->remainIn($validated['warehouse_id']);
-            $this->setDerivatedAttributes($product);
+            $this->setDerivatedAttributes($product, $validated['warehouse_id']);
         }
         return $products;
     }
@@ -80,13 +80,16 @@ class IndexController extends Controller
                 ->where('warehouses.id', $validated['warehouse_id'])
                 ->get();
             $product->existences = $levelProduct->sum('amount');
-            $this->setDerivatedAttributes($product);
+            $this->setDerivatedAttributes($product, $validated['warehouse_id']);
         }
         return $products;
     }
 
-    private function setDerivatedAttributes(Product &$product): void
+    private function setDerivatedAttributes(Product &$product, int $warehouse_id): void
     {
+        $product->min_stock = $product->warehouses()
+            ->wherePivot('warehouse_id', $warehouse_id)
+            ->first()->pivot->min_stock;
         $product->lack = $product->min_stock - $product->existences;
         $product->lack = $product->lack > 0 ? $product->lack : 0;
         $product->remain = $product->existences - $product->min_stock;

@@ -3,7 +3,9 @@
 namespace Database\Seeders\Products;
 
 use App\Models\Products\Product;
+use App\Models\Products\ProductWarehouse;
 use App\Models\Products\SalePrice;
+use App\Models\Warehouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -15,11 +17,11 @@ class ProductRealSeeder extends Seeder
      */
     public function run(): void
     {
+        $warehouses = Warehouse::all();
         $image_not_found = [];
         foreach($this->products as $data){
             $product = Product::create([
                 'name' => $data[0],
-                'min_stock' => 1,
                 'image_uploaded' => true,
             ]);
             SalePrice::create([
@@ -35,6 +37,13 @@ class ProductRealSeeder extends Seeder
                     'product' => $product,
                     'path' => $image_path
                 ];
+            }
+            foreach($warehouses as $warehouse){
+                ProductWarehouse::create([
+                    'min_stock' => 1,
+                    'product_id' => $product->id,
+                    'warehouse_id' => $warehouse->id,
+                ]);
             }
         }
         if(count($image_not_found) > 0){
@@ -55,9 +64,6 @@ class ProductRealSeeder extends Seeder
         $replaced = str_replace(' ', '_', $name);
         return mb_strtolower($replaced) . '.jpg';
     }
-
-    //
-    // williaMs
 
     private array $products = [
         // COCTELERIA 1
