@@ -43,6 +43,15 @@
                         </x-primary-button>
                     </div>
                 </form>
+
+                <h3 class="text-md font-bold mt-8">Pedido</h3>
+                <div class="flex mt-4">
+                    <x-secondary-link-button
+                        :href="route('inventory.order')"
+                    >
+                        Ver pedido
+                    </x-secondary-link-button>
+                </div>
             </div>
         </div>
     </div>

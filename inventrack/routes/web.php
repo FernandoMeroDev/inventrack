@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CashClosing\ShowController as CashClosingShowController;
 use App\Http\Controllers\Inventory\EditController as InventoryEditController;
+use App\Http\Controllers\Inventory\OrderController as InventoryOrderController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
 use App\Http\Controllers\Inventory\AuditController as InventoryAuditController;
 use App\Http\Controllers\Products\ProductController;
@@ -61,6 +62,8 @@ Route::middleware('auth')->controller(InventoryIndexController::class)->group(fu
     Route::get('/inventario/consultar', 'ask')->name('inventory.ask');
     Route::get('/inventario', 'index')->name('inventory.index');
 });
+
+Route::get('/inventario/pedido', [InventoryOrderController::class, 'order'])->name('inventory.order');
 
 Route::middleware('auth')->controller(InventoryEditController::class)->group(function(){
     Route::get('/inventario/editar', 'edit')->name('inventory.edit');

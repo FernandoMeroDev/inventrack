@@ -32,6 +32,13 @@
                         <x-dashboard.inventory :href="route('inventory.ask')">
                             Inventario
                         </x-dashboard.inventory>
+
+                        <x-dashboard.order :href="route('inventory.order', [
+                            'order_by' => 'lack',
+                            'order' => 'desc'
+                        ])">
+                            Pedido
+                        </x-dashboard.order>
                     @endif
 
                     <x-dashboard.sales :href="route('sales.create')">
