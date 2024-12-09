@@ -32,7 +32,10 @@
                     </x-table.simple>
                     <input-error :messages="$errors->get('type')" />
 
-                    <livewire:entities.warehouse.choose :required="true" />
+                    <livewire:entities.warehouse.choose
+                        :required="true"
+                        :all="true"
+                    />
 
                     <div class="mt-8 flex justify-center">
                         <x-primary-button>

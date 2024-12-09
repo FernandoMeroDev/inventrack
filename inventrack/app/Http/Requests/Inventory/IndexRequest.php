@@ -14,9 +14,14 @@ class IndexRequest extends FormRequest
      */
     public function rules(): array
     {
+        if($this->get('warehouse_id') === 'all'){
+            $warehouse_id_rules = 'required|string|size:3';
+        } else {
+            $warehouse_id_rules = 'required|integer|exists:warehouses,id';
+        }
         return [
             'type' => ['required', 'string', Rule::in(['virtual', 'physical'])],
-            'warehouse_id' => 'required|integer|exists:warehouses,id',
+            'warehouse_id' => $warehouse_id_rules,
             'page' => 'sometimes|integer|min:1',
             'search' => 'sometimes|nullable|string|max:255',
             'order_by' => [

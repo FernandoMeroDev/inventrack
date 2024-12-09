@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <span class="block text-sm mt-3">Bodega</span>
-                    <x-text-input :value="$inputs['warehouse']->name" disabled />
+                    <x-text-input :value="$inputs['warehouse']?->name ?? 'Todas'" disabled />
 
                     <span class="block text-sm mt-3">Tipo</span>
                     <x-text-input :value="$inputs['type'] == 'virtual' ? 'Virtual' : 'Físico'" disabled />
@@ -97,11 +97,18 @@
                                     >
                                         {{$product->name}}
                                     </div>
-                                    <x-entities.products.modal
-                                        :name="'product-modal-' . $product->id"
-                                        :$product
-                                        :warehouse-id="$inputs['warehouse']->id"
-                                    />
+                                    @if($inputs['warehouse'] == 'all')
+                                        <x-entities.inventory.index.products-modal
+                                            :name="'product-modal-' . $product->id"
+                                            :$product
+                                        />
+                                    @else
+                                        <x-entities.products.modal
+                                            :name="'product-modal-' . $product->id"
+                                            :$product
+                                            :warehouse-id="$inputs['warehouse']->id"
+                                        />
+                                    @endif
                                     <div class="col-span-1 pr-1">
                                         <p class="font-bold">Cantidad</p>
                                         <x-number-input
@@ -133,7 +140,7 @@
                     </x-table.simple>
                     {{$products->links(data: ['scrollTo' => false])}}
 
-                    @if($inputs['type'] == 'physical')
+                    @if($inputs['type'] == 'physical' && $inputs['warehouse'] != 'all')
                     <div class="mt-8 flex justify-between">
                         <x-primary-link-button :href="route(
                             'inventory.edit', ['warehouse_id' => $inputs['warehouse']->id]

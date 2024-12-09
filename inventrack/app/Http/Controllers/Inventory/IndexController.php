@@ -8,6 +8,7 @@ use App\Models\Products\Product;
 use App\Models\Shelves\LevelProduct;
 use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Collection;
+use stdClass;
 
 class IndexController extends Controller
 {
@@ -21,12 +22,12 @@ class IndexController extends Controller
         $validated = $request->validated();
         $inputs = [
             'type' => $validated['type'],
-            'warehouse' => Warehouse::find($validated['warehouse_id'])
+            'warehouse' => Warehouse::find($validated['warehouse_id']) ?? 'all'
         ];
-    
-        $products = $validated['type'] === 'virtual'
-            ? $this->queryVirtual($validated)
-            : $this->queryPhysical($validated);
+
+        $products = $validated['warehouse_id'] == 'all'
+            ? $this->queryAllWarehouses($validated)
+            : $this->querySpecificWarehouse($validated);
         $products = $this->filterandOrderProducts($products, $validated);
         $total_count = $products->count();
         $products = $this->simplePaginate(
@@ -49,6 +50,57 @@ class IndexController extends Controller
                 'order' => $validated['order'] ?? null,
             ]
         ]);
+    }
+
+    private function queryAllWarehouses(array $validated): Collection
+    {
+        $products = Product::orderBy('name')->get();
+        foreach($products as $product){
+            $warehouses_inventory = [];
+            $product->existences = 0;
+            $product->min_stock = 0;
+            foreach($product->warehouses as $warehouse){
+                $warehouse_inventory = new stdClass();
+                $warehouse_inventory->id = $warehouse->id;
+                $warehouse_inventory->name = $warehouse->name;
+                $warehouse_inventory->min_stock = $warehouse->pivot->min_stock;
+                if($validated['type'] === 'virtual'){
+                    // Virtual
+                    $warehouse_inventory->existences = $product->remainIn($warehouse->id);
+                } else {
+                    // Physical
+                    $levelProduct = LevelProduct::
+                        join('levels', 'levels.id', '=', 'level_product.level_id')
+                        ->join('shelves', 'levels.shelf_id', '=', 'shelves.id')
+                        ->join('warehouses', 'shelves.warehouse_id', '=', 'warehouses.id')
+                        ->select('level_product.id', 'level_product.amount')
+                        ->where('level_product.product_id', $product->id)
+                        ->where('warehouses.id', $warehouse->id)
+                        ->get();
+                    $warehouse_inventory->existences = $levelProduct->sum('amount');
+                }
+                $product->existences += $warehouse_inventory->existences;
+                $product->min_stock += $warehouse_inventory->min_stock;
+                $warehouse_inventory->lack = $warehouse_inventory->min_stock - $warehouse_inventory->existences;
+                $warehouse_inventory->lack = $warehouse_inventory->lack > 0 ? $warehouse_inventory->lack : 0;
+                $warehouse_inventory->remain = $warehouse_inventory->existences - $warehouse_inventory->min_stock;
+                $warehouse_inventory->remain = $warehouse_inventory->remain > 0 ? $warehouse_inventory->remain : 0;
+                $warehouses_inventory[] = $warehouse_inventory;
+            }
+            $product->warehouses_inventory = $warehouses_inventory;
+            $product->lack = $product->min_stock - $product->existences;
+            $product->lack = $product->lack > 0 ? $product->lack : 0;
+            $product->remain = $product->existences - $product->min_stock;
+            $product->remain = $product->remain > 0 ? $product->remain : 0;
+        }
+        return $products;
+    }
+
+    private function querySpecificWarehouse(array $validated): Collection
+    {
+        return $validated['type'] === 'virtual'
+            ? $this->queryVirtual($validated)
+            : $this->queryPhysical($validated);
     }
 
     private function resetIndexPage(array $inputs)
