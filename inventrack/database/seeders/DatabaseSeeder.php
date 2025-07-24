@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             ReceiptTypeSeeder::class,
             WarehouseSeeder::class,
             ShelfRealSeeder::class,
-            ProductRealSeeder::class, // TODO
+            ProductRealSeeder::class,
         ]);
     }
 }
