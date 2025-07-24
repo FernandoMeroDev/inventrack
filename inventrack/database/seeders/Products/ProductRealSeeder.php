@@ -33,6 +33,8 @@ class ProductRealSeeder extends Seeder
             if(File::exists($image_path)){
                 File::copy($image_path, "../public/storage/$product->id");
             } else {
+                $product->image_uploaded = false;
+                $product->save();
                 $image_not_found[] = [
                     'product' => $product,
                     'path' => $image_path
