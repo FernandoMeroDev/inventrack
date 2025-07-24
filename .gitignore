@@ -2,7 +2,10 @@
 /node_modules
 /public/build
 /public/hot
-/public/storage
+/inventrack/public/hot
+/public/storage/*
+!/public/storage/inventrack.png
+!/public/storage/logo_hd.jpg
 /storage/*.key
 /storage/pail
 /vendor
