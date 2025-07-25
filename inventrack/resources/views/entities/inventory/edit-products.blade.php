@@ -24,7 +24,7 @@
                     />
                     <x-secondary-link-button
                         href="{{route('inventory.edit', ['warehouse_id' => $inputs['shelf']->warehouse->id])}}" class="self-center mt-1"
-                    >Regregsar</x-secondary-link-button>
+                    >Regresar</x-secondary-link-button>
 
                     <span class="block text-sm mt-3">Percha</span>
                     <x-text-input
@@ -42,7 +42,6 @@
                     <x-entities.inventory.edit-products.navigation-links
                         :shelf="$inputs['shelf']"
                         :level="$inputs['level']"
-                        :previous="['pito']"
                     />
 
                     <a name="products" class="mt-3 block text-sm">Productos</a>
@@ -71,6 +70,16 @@
                         </x-table.simple.tr>
                         @endforeach
                     </x-table.simple>
+                    </div>
+                    <div class="flex justify-between mt-4">
+                        <x-secondary-link-button href="{{route('shelves.edit', $inputs['shelf']->id)}}">
+                            Editar
+                        </x-secondary-link-button>
+                        <form action="#" method="POST">
+                            <x-danger-button>
+                                Eliminar
+                            </x-danger-button>
+                        </form>
                     </div>
                 </form>
             </div>

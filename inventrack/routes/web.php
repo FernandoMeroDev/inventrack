@@ -5,6 +5,7 @@ use App\Http\Controllers\Inventory\EditController as InventoryEditController;
 use App\Http\Controllers\Inventory\OrderController as InventoryOrderController;
 use App\Http\Controllers\Inventory\IndexController as InventoryIndexController;
 use App\Http\Controllers\Inventory\AuditController as InventoryAuditController;
+use App\Http\Controllers\Inventory\Shelves\ShelfController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Purchases\CreateController as PurchaseCreateController;
 use App\Http\Controllers\Sales\CreateController as SaleCreateController;
@@ -69,6 +70,11 @@ Route::middleware('auth')->controller(InventoryEditController::class)->group(fun
     Route::get('/inventario/editar', 'edit')->name('inventory.edit');
     Route::get('/inventario/editar/productos', 'editProducts')->name('inventory.edit-products');
     Route::put('/inventario/{level}/productos', 'updateProducts')->name('inventory.update-products');
+});
+
+Route::middleware('auth')->controller(ShelfController::class)->group(function(){
+    Route::get('/perchas/{shelf}/editar', 'edit')->name('shelves.edit');
+    Route::put('/perchas/{shelf}', 'update')->name('shelves.update');
 });
 
 Route::middleware('auth')->controller(InventoryAuditController::class)->group(function(){
