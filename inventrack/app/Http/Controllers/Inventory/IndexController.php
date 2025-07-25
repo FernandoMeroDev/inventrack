@@ -7,11 +7,33 @@ use App\Http\Requests\Inventory\IndexRequest;
 use App\Models\Products\Product;
 use App\Models\Shelves\LevelProduct;
 use App\Models\Warehouse;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 class IndexController extends Controller
 {
+    public function download()
+    {
+        $products = $this->queryAllWarehouses([
+            "type" => "physical",
+            "warehouse_id" => "all"
+        ]);
+        $text = "Producto,Depósito,Licorería\n";
+        foreach($products as $product){
+            $text .= $product->name . ',';
+            foreach($product->warehouses_inventory as $warehouse){
+                $text .= $warehouse->existences . ',';
+            }
+            $text .= $product->existences . ',';
+            $text .= "\n";
+        }
+        $filename = ( new DateTime() )->format("Y-m-d_H_i_s u") . '.csv'; 
+        Storage::disk('local')->put($filename, $text);
+        return response()->download(storage_path("app/private/$filename"), "reporte-$filename");
+    }
+
     public function ask()
     {
         return view('entities.inventory.ask');

@@ -60,6 +60,7 @@ Route::middleware('auth')->controller(ReceiptController::class)->group(function(
 });
 
 Route::middleware('auth')->controller(InventoryIndexController::class)->group(function(){
+    Route::get('/inventario/download', 'download')->name('inventory.download');
     Route::get('/inventario/consultar', 'ask')->name('inventory.ask');
     Route::get('/inventario', 'index')->name('inventory.index');
 });

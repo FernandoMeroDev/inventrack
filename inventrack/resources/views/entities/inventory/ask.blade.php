@@ -52,6 +52,15 @@
                         Ver pedido
                     </x-secondary-link-button>
                 </div>
+
+                <h3 class="text-md font-bold mt-8">CSV</h3>
+                <div class="flex mt-4">
+                    <x-secondary-link-button
+                        :href="route('inventory.download')"
+                    >
+                        Descargar
+                    </x-secondary-link-button>
+                </div>
             </div>
         </div>
     </div>
