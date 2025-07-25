@@ -17,7 +17,7 @@
 
                     <div class="mt-3 flex justify-between items-end">
                         <a name="shelves" class="block text-sm">Perchas</a>
-                        <x-secondary-link-button>
+                        <x-secondary-link-button :href="route('shelves.create', ['warehouse_id' => $inputs['warehouse']->id])">
                             Agregar
                         </x-secondary-link-button>
                     </div>

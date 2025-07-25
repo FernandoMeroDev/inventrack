@@ -12,7 +12,7 @@ class Shelf extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'warehouse_id'];
+    protected $fillable = ['number', 'warehouse_id'];
 
     public $timestamps = false;
 

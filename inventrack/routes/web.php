@@ -74,6 +74,7 @@ Route::middleware('auth')->controller(InventoryEditController::class)->group(fun
 
 Route::middleware('auth')->controller(ShelfController::class)->group(function(){
     Route::get('/perchas/crear', 'create')->name('shelves.create');
+    Route::post('/perchas', 'store')->name('shelves.store');
     Route::get('/perchas/{shelf}/editar', 'edit')->name('shelves.edit');
     Route::put('/perchas/{shelf}', 'update')->name('shelves.update');
     Route::delete('/perchas/{shelf}', 'destroy')->name('shelves.destroy');
