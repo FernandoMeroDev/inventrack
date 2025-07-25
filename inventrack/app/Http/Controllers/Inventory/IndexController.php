@@ -20,7 +20,7 @@ class IndexController extends Controller
             "type" => "physical",
             "warehouse_id" => "all"
         ]);
-        $text = "Producto,Depósito,Licorería\n";
+        $text = "Producto,Depósito,Licorería,Total\n";
         foreach($products as $product){
             $text .= $product->name . ',';
             foreach($product->warehouses_inventory as $warehouse){
@@ -30,8 +30,15 @@ class IndexController extends Controller
             $text .= "\n";
         }
         $filename = ( new DateTime() )->format("Y-m-d_H_i_s u") . '.csv'; 
-        Storage::disk('local')->put($filename, $text);
-        return response()->download(storage_path("app/private/$filename"), "reporte-$filename");
+        Storage::disk('local')->put($filename, "\xEF\xBB\xBF" . $text);
+        return response()->download(
+            storage_path("app/private/$filename"), 
+            "reporte-$filename",
+            [
+                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Content-Disposition' => 'attachment; filename="reporte-' . $filename . '"',
+            ]
+        );
     }
 
     public function ask()
