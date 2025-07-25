@@ -70,17 +70,19 @@
                         </x-table.simple.tr>
                         @endforeach
                     </x-table.simple>
-                    </div>
-                    <div class="flex justify-between mt-4">
-                        <x-secondary-link-button href="{{route('shelves.edit', $inputs['shelf']->id)}}">
-                            Editar
-                        </x-secondary-link-button>
-                        <form action="#" method="POST">
-                            <x-danger-button>
-                                Eliminar
-                            </x-danger-button>
-                        </form>
-                    </div>
+                </form>
+            </div>
+
+            <div class="flex justify-between mt-4 p-6 pt-0">
+                <x-secondary-link-button href="{{route('shelves.edit', $inputs['shelf']->id)}}">
+                    Editar
+                </x-secondary-link-button>
+                <form action="{{route('shelves.destroy', $inputs['shelf']->id)}}" method="POST">
+                    @csrf
+                    @method('delete')
+                    <x-danger-button type="submit">
+                        Eliminar
+                    </x-danger-button>
                 </form>
             </div>
         </div>

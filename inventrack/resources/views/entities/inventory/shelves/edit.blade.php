@@ -75,10 +75,17 @@
                         <x-input-error :messages="$errors->get('levels.*')" />
                     </div>
 
-                    <div class="flex justify-center">
+                    <div class="flex justify-between">
                         <x-primary-button type="submit">
                             Guardar
                         </x-primary-button>
+
+                        <x-secondary-link-button :href="route('inventory.edit-products', [
+                            'shelf_id' => $shelf->id,
+                            'level_id' => $shelf->levels->get(1)->id
+                        ])">
+                            Cancelar
+                        </x-secondary-link-button>
                     </div>
                 </form>
 

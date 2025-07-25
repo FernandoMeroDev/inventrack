@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class ShelfController extends Controller
 {
+    public function create()
+    {
+        #
+    }
+
     public function edit(Shelf $shelf)
     {
         return view('entities.inventory.shelves.edit', [
@@ -34,6 +39,15 @@ class ShelfController extends Controller
         return redirect()->route('inventory.edit-products', [
             'shelf_id' => $shelf->id,
             'level_id' => $shelf->levels->get(1)->id
+        ]);
+    }
+
+    public function destroy(Shelf $shelf)
+    {
+        $warehouse_id = $shelf->warehouse->id;
+        $shelf->delete();
+        return redirect()->route('inventory.edit', [
+            'warehouse_id' => $warehouse_id
         ]);
     }
 }
