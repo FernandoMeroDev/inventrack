@@ -16,7 +16,7 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image_uploaded'];
+    protected $fillable = ['name', 'image_uploaded', 'purchase_price'];
 
     public function levelsIn(int $warehouseId): Collection
     {
@@ -36,7 +36,7 @@ class Product extends Model
         return $levelProducts;
     }
 
-    public function remainIn(int $entity_id, string $entity = 'Warehouse'): int
+    public function remainIn(int $entity_id, string $entity = 'Warehouse')
     {
         if($entity === 'Warehouse'){
             $lastMovement = static::join('movements', 'movements.product_id', '=', 'products.id')
