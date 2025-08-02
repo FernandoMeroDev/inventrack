@@ -1,8 +1,15 @@
 <div>
 @if($products->isNotEmpty())
 <x-table.simple>
+    <x-table.simple.tr wire:key="0">
+        <x-table.simple.td class="flex justify-center">
+            <x-secondary-button id="ableDragAndDropButton">
+                Cambiar Orden
+            </x-secondary-button>
+        </x-table.simple.td>
+    </x-table.simple.tr>
     @foreach($products as $i => $product)
-        <x-table.simple.tr>
+        <x-table.simple.tr id="productRow{{$product->id}}" class="productRowDraggable" wire:key="{{$product->id}}">
             <x-table.simple.td>
                 <div class="grid grid-cols-2">
                     <div
@@ -33,7 +40,7 @@
                     <div class="col-span-1 flex justify-center items-end">
                         <button
                             wire:click.prevent="remove({{$product->id}})"
-                            class="text-white bg-red-400 px-2 rounded mt-1"
+                            class="livewireActionButton text-white bg-red-400 px-2 rounded mt-1"
                         >Remover</button>
                     </div>
                 </div>
@@ -41,6 +48,107 @@
         </x-table.simple.tr>
     @endforeach
 </x-table.simple>
+
+@script
+<script>
+    const ableDragAndDrop = () => {
+        let draggedElement = '';
+
+        let productRows = document.querySelectorAll('.productRowDraggable');
+
+        if(productRows.length < 2){
+            alert('Debe haber al menos dos productos');
+            return;
+        }
+
+        // Unable actions to prevent livewire conflicts with HTML drag and drop
+        searchProductsInput = document.getElementById('searchProductsFalseInput');
+        searchProductsInput.disabled = true;
+        searchProductsInput.classList.add('opacity-50');
+        document.querySelectorAll('.livewireActionButton').forEach(button => {
+            button.disabled = true;
+            button.classList.add('opacity-50');
+        });
+
+        productRows.forEach(row => {
+            row.draggable = true;
+
+            row.addEventListener('dragstart', (e) => {
+                draggedElement = row;
+                e.dataTransfer.setData('text/plain', row.id);
+            });
+
+            row.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                row.classList.add('bg-red-400');
+            });
+
+            row.addEventListener('dragleave', () => {
+                row.classList.remove('bg-red-400');
+            });
+
+            row.addEventListener('drop', (e) => {
+                e.preventDefault();
+                row.classList.remove('bg-red-400');
+
+                const targetElement = row;
+                if (draggedElement !== targetElement) {
+                    // Intercambiar los elementos usando clonación
+                    const container = targetElement.parentNode;
+                    const cloneDragged = draggedElement.cloneNode(true);
+                    const cloneTarget = targetElement.cloneNode(true);
+
+                    container.replaceChild(cloneDragged, targetElement);
+                    container.replaceChild(cloneTarget, draggedElement);
+
+                    // Volver a agregar eventos a los nuevos elementos
+                    addDragEvents(cloneDragged);
+                    addDragEvents(cloneTarget);
+                }
+            });
+        });
+
+        function addDragEvents(el) {
+            el.addEventListener('dragstart', (e) => {
+                draggedElement = el;
+                e.dataTransfer.setData('text/plain', el.id);
+            });
+
+            el.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                el.classList.add('bg-red-400');
+            });
+
+            el.addEventListener('dragleave', () => {
+                el.classList.remove('bg-red-400');
+            });
+
+            el.addEventListener('drop', (e) => {
+                e.preventDefault();
+                el.classList.remove('bg-red-400');
+
+                const targetElement = el;
+                if (draggedElement !== targetElement) {
+                const container = targetElement.parentNode;
+                const cloneDragged = draggedElement.cloneNode(true);
+                const cloneTarget = targetElement.cloneNode(true);
+
+                container.replaceChild(cloneDragged, targetElement);
+                container.replaceChild(cloneTarget, draggedElement);
+
+                addDragEvents(cloneDragged);
+                addDragEvents(cloneTarget);
+                }
+            });
+        }
+    };
+
+    document.getElementById('ableDragAndDropButton').addEventListener('click', (event) => {
+        event.preventDefault();
+        ableDragAndDrop();
+    });
+</script>
+@endscript
 @endif
 
 <x-text-input 
@@ -68,7 +176,7 @@
                     <div class="col-span-2 flex justify-center items-end">
                         <button
                             wire:click.prevent="add({{$product->id}})"
-                            class="text-white bg-black px-3 rounded mt-1"
+                            class="livewireActionButton text-white bg-black px-3 rounded mt-1"
                         >Agregar</button>
                     </div>
                 </div>
