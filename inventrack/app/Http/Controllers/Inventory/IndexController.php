@@ -20,9 +20,10 @@ class IndexController extends Controller
             "type" => "physical",
             "warehouse_id" => "all"
         ]);
-        $text = "Producto,Depósito,Licorería,Total\n";
+        $text = "Producto,Precio,Depósito,Licorería,Total\n";
         foreach($products as $product){
             $text .= $product->name . ',';
+            $text .= $product->purchase_price;
             foreach($product->warehouses_inventory as $warehouse){
                 $text .= $warehouse->existences . ',';
             }
@@ -83,7 +84,7 @@ class IndexController extends Controller
 
     private function queryAllWarehouses(array $validated): Collection
     {
-        $products = Product::orderBy('name')->get();
+        $products = Product::orderByRaw('purchase_price, name')->get();
         foreach($products as $product){
             $warehouses_inventory = [];
             $product->existences = 0;
