@@ -17,6 +17,7 @@ class StoreRequest extends FormRequest
         $warehouses = Warehouse::all();
         return [
             'name' => 'required|string|max:255|unique:products,name',
+            'purchase_price' => 'required|decimal:0,2|min:0.01|max:999.99',
             'image' => 'nullable|file|image|max:50',
             'min_stocks' => [
                 'required',
@@ -35,6 +36,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
+            'purchase_price' => 'Precio de venta en inventario',
             'image' => 'imagen',
             'min_stocks' => 'stocks mínimos',
             'min_stocks.*' => 'stock mínimo #:position',

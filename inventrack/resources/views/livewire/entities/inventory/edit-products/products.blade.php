@@ -3,7 +3,7 @@
 <x-table.simple>
     <x-table.simple.tr wire:key="0">
         <x-table.simple.td class="flex justify-center">
-            <x-secondary-button id="ableDragAndDropButton">
+            <x-secondary-button disabled id="ableDragAndDropButton">
                 Cambiar Orden
             </x-secondary-button>
         </x-table.simple.td>
@@ -143,10 +143,15 @@
         }
     };
 
-    document.getElementById('ableDragAndDropButton').addEventListener('click', (event) => {
-        event.preventDefault();
-        ableDragAndDrop();
-    });
+    setTimeout(() => {
+        let ableDragAndDropButton = document.getElementById('ableDragAndDropButton');
+        ableDragAndDropButton.disabled = false;
+        ableDragAndDropButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.target.disabled = true;
+            ableDragAndDrop();
+        });
+    }, 2000);
 </script>
 @endscript
 @endif

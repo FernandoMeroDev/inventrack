@@ -29,6 +29,18 @@
                     </div>
 
                     <div>
+                    <label for="purchasePriceInput" class="block">
+                        Precio de venta en Inventario ($)
+                    </label>
+                    <x-number-input
+                        name="purchase_price" id="purchasePriceInput"
+                        required min="0.01" max="999.99"
+                        step="0.01" value="{{old('purchase_price', $product->purchase_price)}}"
+                    />
+                    <x-input-error :messages="$errors->get('purchase_price')" />
+                    </div>
+
+                    <div>
                     <label for="imageInput" class="block">
                         Imagen
                     </label>

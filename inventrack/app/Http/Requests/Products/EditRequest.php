@@ -22,6 +22,7 @@ class EditRequest extends FormRequest
                 'required', 'string', 'max:255',
                 Rule::unique('products', 'name')->ignore($product->id)
             ],
+            'purchase_price' => 'required|decimal:0,2|min:0.01|max:999.99',
             'image' => 'nullable|file|image|max:50',
             'remove_image' => 'sometimes|accepted',
             'min_stocks' => [
@@ -41,6 +42,7 @@ class EditRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
+            'purchase_price' => 'Precio de venta en inventario',
             'image' => 'imagen',
             'remove_image' => 'remover imagen',
             'min_stocks' => 'stocks mínimos',

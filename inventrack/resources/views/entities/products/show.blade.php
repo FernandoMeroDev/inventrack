@@ -14,6 +14,10 @@
                         {{$product->name}}
                     </p>
 
+                    <p class="mb-3 font-bold">
+                        Precio de venta en Inventario: ${{$product->purchase_price}}
+                    </p>
+
                     <div class="mt-3 flex justify-center">
                         <x-entities.products.image :$product />
                     </div>

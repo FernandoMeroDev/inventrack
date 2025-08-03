@@ -57,6 +57,7 @@ class ProductController extends Controller
         $validated = $request->validated();
         $product = Product::create([
             'name' => mb_strtoupper($validated['name']),
+            'purchase_price' => $validated['purchase_price'],
             'image_uploaded' => $request->hasFile('image')
         ]);
         for($i = 0; $i < count($validated['prices']); $i++){
@@ -95,6 +96,7 @@ class ProductController extends Controller
         $validated = $request->validated();
         $product->update([
             'name' => mb_strtoupper($validated['name']),
+            'purchase_price' => $validated['purchase_price'],
             'image_uploaded' => $product->image_uploaded || $request->hasFile('image')
         ]);
         foreach($product->salePrices as $salePrice) $salePrice->delete();

@@ -28,6 +28,18 @@
                     </div>
 
                     <div>
+                    <label for="purchasePriceInput" class="block">
+                        Precio de venta en Inventario ($)
+                    </label>
+                    <x-number-input
+                        name="purchase_price" id="purchasePriceInput"
+                        required min="0.01" max="999.99"
+                        step="0.01"
+                    />
+                    <x-input-error :messages="$errors->get('purchase_price')" />
+                    </div>
+
+                    <div>
                     <label for="imageInput" class="block">
                         Imagen
                     </label>
@@ -50,7 +62,7 @@
                                         name="min_stocks[{{$warehouse->id}}]"
                                         id="minStockInput{{$key}}"
                                         required min="0" max="255"
-                                        value="{{old('min_stocks.'.$warehouse->id)}}"
+                                        value="{{old('min_stocks.'.$warehouse->id, 0)}}"
                                     />
                                 </x-table.simple.td>
                             </x-table.simple.tr>
