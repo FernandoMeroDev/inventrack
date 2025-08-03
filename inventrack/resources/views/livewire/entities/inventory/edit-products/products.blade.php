@@ -3,7 +3,7 @@
 <x-table.simple>
     <x-table.simple.tr wire:key="0">
         <x-table.simple.td class="flex justify-center">
-            <x-secondary-button disabled id="ableDragAndDropButton">
+            <x-secondary-button wire:ignore disabled id="ableDragAndDropButton">
                 Cambiar Orden
             </x-secondary-button>
         </x-table.simple.td>
