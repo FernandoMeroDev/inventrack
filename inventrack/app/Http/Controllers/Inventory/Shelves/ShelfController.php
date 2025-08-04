@@ -50,6 +50,7 @@ class ShelfController extends Controller
     {
         $validated = $request->validated();
         $shelf->number = $validated['number'];
+        $shelf->save();
         $levels = $shelf->levels;
         foreach($levels as $level){
             $level->delete();

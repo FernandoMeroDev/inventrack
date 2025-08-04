@@ -23,7 +23,7 @@ class IndexController extends Controller
         $text = "Producto,Precio,Depósito,Licorería,Total\n";
         foreach($products as $product){
             $text .= $product->name . ',';
-            $text .= $product->purchase_price;
+            $text .= $product->purchase_price . ',';
             foreach($product->warehouses_inventory as $warehouse){
                 $text .= $warehouse->existences . ',';
             }
